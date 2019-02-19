@@ -7,7 +7,15 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@datastructures-js/graph": "^2.0.0",
+    "d3": "^5.9.1",
+    "directed-graph-map": "^1.2.3",
+    "graph.js": "^1.21.1",
+    "graphlib": "^2.1.7",
+    "javascript-algorithms-and-data-structures": "^0.0.4",
+    "js-data-structure": "^0.7.3",
     "vue": "^2.5.22",
+    "vue-resize-directive": "^1.1.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
