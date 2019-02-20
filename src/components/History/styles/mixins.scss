@@ -1,0 +1,70 @@
+@mixin fill() {
+    
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+}
+
+@mixin typography() {
+    font-family: Arial;
+}
+
+
+/*
+container
+    header (no flex)
+    .content (flex, no scrollbars)
+*/
+@mixin scrollableContent($selector) {
+    
+    display: flex;
+    flex-direction: column;
+    
+    // header is fixed
+    header {
+        flex: 0;
+    }
+
+    // content scrolls
+    #{$selector} {
+        overflow: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}
+
+
+
+/*
+
+Show/hide history editor sections based on status
+classes on container element
+
+// hide by default
+.label {
+    display:none;
+}
+
+// make visible with duplicate class status toggle on a container
+.label .label {
+    display: initial
+}
+
+*/
+@mixin parentStatusToggles($label) {
+    #{$label} {
+        display: none;
+    }
+    &#{$label} #{$label} {
+        display: initial;
+    }
+}

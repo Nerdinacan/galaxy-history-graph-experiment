@@ -1134,6 +1134,11 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
+animatewithsass@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/animatewithsass/-/animatewithsass-3.2.1.tgz#4ae833f5b852377c6e8fd574c4223334dfee8c19"
+  integrity sha1-Sugz9bhSN3xuj9V0xCIzNN/ujBk=
+
 ansi-colors@^3.0.0:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.3.tgz#57d35b8686e851e2cc04c403f1c00203976a1813"

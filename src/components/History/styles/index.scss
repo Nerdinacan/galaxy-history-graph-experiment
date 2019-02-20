@@ -1,0 +1,176 @@
+/*
+div.history
+    section.history-graph
+        svg
+    div.history-editor-panels
+        section.dataset-selection
+        section.tool-list
+        section.tool-parameters
+    section.hover-selection  
+*/
+
+@import "~animatewithsass/animate.scss";
+@import "./colors";
+@import "./mixins";
+
+@import "./datasetSelection";
+@import "./hoverSelection";
+
+
+@mixin historyPanelFlexContainer() {
+    display: flex;
+    justify-content: flex-end;
+
+    > section {
+        width: auto;
+    }
+
+    .dataset-selection {
+        min-width: 200px;
+    }
+    .tool-list {
+        max-width: 250px;
+    }
+    .tool-parameters {
+        min-width: 400px;
+    }
+}
+
+// click through the empty part of the
+// panels container, but re-capture in the
+// populated areas of the overlay
+@mixin historyHandleClickThrough() {
+    pointer-events: none;
+    > section * {
+        pointer-events: auto;
+    }
+}
+
+@mixin boringSquareButton() {
+    display: block;
+    padding: 6px;
+    margin-bottom: 4px;
+    border: 4px solid;
+    font-size: 12px;
+    text-decoration: none;    
+}
+
+
+// button lists
+@mixin buttonDataTypes() {
+
+    color: white;
+    background-color: lightgrey;
+    border-color: lightgrey;
+
+    &:hover {
+        background-color: black;
+        border-color: black;
+    }
+
+    // link types
+
+    &.dataset  {
+        background-color: $dataset-color;
+        border-color: $dataset-color;
+        &:hover {
+            background-color: $doomed-color;
+            border-color: $doomed-color;
+        }
+    }
+    
+    &.dataset.hoverselect {
+        color: $dataset-color;
+        background-color: white;
+    }
+    
+    &.tool {
+        background-color: $job-color;
+        border-color: $job-color;
+        &:hover {
+            background-color: $doomed-color;
+            border-color: $doomed-color;
+        }
+    }
+
+}
+
+
+// Layout
+
+main {
+    height: 100vh;
+}
+
+.history,
+.history-graph {
+    @include fill();
+}
+
+.history-editor-panels {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: auto;
+}
+
+.history {
+
+    @include typography();
+    @include parentStatusToggles(".dataset-selection");
+    @include parentStatusToggles(".tool-list");
+    @include parentStatusToggles(".tool-parameters");
+    
+
+    a.button {
+        @include boringSquareButton();
+    }
+
+    .history-graph {
+        z-index: 0;
+    }
+    
+    .history-editor-panels {
+        z-index: 1;
+        height: 100vh;
+        @include historyPanelFlexContainer();
+        @include historyHandleClickThrough();
+        
+        section {
+            margin-right: 2em;
+        }
+    }
+
+    .hover-selection {
+        z-index: 2;
+        position: fixed;
+        bottom: 2rem;
+        left: 2rem;
+    }
+
+    // leave header in place, scroll content
+    // need to define it in terms of container visibility flag
+    // since display: none and display: flex collide
+    &.tool-list .tool-list {
+        @include scrollableContent(".content");
+    }
+
+    // lists
+    ul, 
+    ol {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        a {
+            @include boringSquareButton();
+            @include buttonDataTypes();
+        }
+    }
+
+    // stand alone buttons
+    a.button {
+        @include boringSquareButton();
+        @include buttonDataTypes();
+    }
+}

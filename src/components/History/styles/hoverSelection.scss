@@ -1,0 +1,34 @@
+@import "./colors.scss";
+
+.hover-selection {
+    position: absolute;
+    bottom: 2em;
+    left: 2em;
+    margin: 0;
+    padding: 0;
+
+    > * {
+        margin: 0;
+        padding: 0;
+    }
+
+    h4 {
+        margin-bottom: 0;
+        color: lightgrey;
+    }
+    h1 {
+        font-size: 2em;
+        opacity: 0.5;
+    }
+
+    &.dataset {
+        h1 {
+            color: $dataset-color;
+        }
+    }
+    &.job {
+        h1 {
+            color: $job-color;
+        }
+    }
+}

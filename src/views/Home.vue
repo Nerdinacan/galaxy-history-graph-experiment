@@ -1,14 +1,11 @@
 <template>
-    <history-graph />
+    <div>Home</div>
 </template>
 
 <script>
 
-import HistoryGraph from '@/components/HistoryGraph.vue'
-
 export default {
-    name: 'home',
-    components: { HistoryGraph }
+    name: 'home'
 }
 
 </script>

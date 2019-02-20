@@ -1,12 +1,4 @@
-/**
- * Generate graph representation of list of datasets and jobs
- * https://www.geeksforgeeks.org/implementation-graph-javascript/
- * 
- */
 
-// import { Graph } from "./Graph";
-// import Graph from "directed-graph-map";
-import Graph from "graph.js";
 
 // import Graph from "@datastructures-js/graph";
 // notes: Keys must be primitives, no Map(), Set() internal structure
@@ -32,26 +24,3 @@ import Graph from "graph.js";
 // Looks buggy but good source for algos
 // https://github.com/trekhleb/javascript-algorithms
 // https://github.com/trekhleb/javascript-algorithms/tree/master/src/algorithms/graph/topological-sorting
-
-
-// Graph of ids only
-export async function generateGraph(datasets, jobs) {
-
-    // create graph model
-    let g = new Graph();
-
-    datasets.forEach(ds => {
-        g.addVertex(String(ds.id), ds);
-    })
-
-    jobs.forEach(job => {
-        g.addVertex(String(job.id), job);
-    })
-
-    jobs.forEach(job => {
-        job.inputs.forEach(id => g.createNewEdge(String(id), String(job.id)));
-        job.outputs.forEach(id => g.createNewEdge(String(job.id), String(id)));
-    });
-
-    return g;
-}

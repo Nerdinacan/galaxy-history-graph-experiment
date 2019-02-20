@@ -1,0 +1,10 @@
+.tool-list ol li a {
+
+    background-color: lightgrey; // $tool-color;
+    color: white;
+
+    &:hover {
+        background-color: $tool-color;
+    }
+}
+

@@ -1,0 +1,39 @@
+@import "../styles/colors.scss";
+
+.history-graph svg {
+
+    .links * {
+        stroke: $link-color;
+        stroke-dasharray: 2px 2px;
+    }
+    
+    .nodes * {
+        cursor: pointer;
+        stroke-width: 4px;
+        stroke: $link-color;
+
+        &.job {
+            fill: $job-color;
+            stroke: white;
+        }
+        
+        &.dataset {
+            fill: white;
+            opacity: 0.8;
+            &:hover {
+                stroke: $dataset-color;
+                opacity: 1.0;
+            }
+            &.selected {
+                fill: $dataset-color;
+                stroke:$dataset-color;
+            }
+        }
+    
+    }
+    
+    .zoomCatcher {
+        fill: transparent;
+    }
+
+}    
