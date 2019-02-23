@@ -100,7 +100,6 @@ export default {
 
         // when selected tool box is clicked
         onToolClick(tool) {
-            debugger;
             if (this.tool) {
                 this.tool = null;
             }

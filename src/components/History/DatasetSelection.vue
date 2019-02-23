@@ -1,7 +1,7 @@
 <template>
     <section class="dataset-selection">
 
-        <header v-if="hasSelection">
+        <header>
             <h4>Inputs</h4>
         </header>
         <ol>
@@ -19,6 +19,7 @@
         <header>
         	<h4>Operaton</h4>
         </header>
+        
         <a class="button" :class="toolClasses" 
             @click.prevent="$emit('clickTool', tool)">
             {{ toolLinkLabel }}

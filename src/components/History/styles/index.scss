@@ -120,19 +120,24 @@ main {
     @include typography();
     
     
-
     a.button {
         @include boringSquareButton();
     }
 
-    .history-graph {
+    .history-graph-container {
+        display: flex;
         z-index: 0;
+        .history-graph {
+            border: 1px solid red;
+        }
     }
+
     
     .history-editor-panels {
         z-index: 1;
         height: 100vh;
-        @include parentStatusToggles(".dataset-selection");
+
+        // @include parentStatusToggles(".dataset-selection");
         @include parentStatusToggles(".tool-list");
         @include parentStatusToggles(".tool-parameters");
         @include historyPanelFlexContainer();

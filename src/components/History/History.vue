@@ -1,13 +1,24 @@
 <template>
-    <div class="history" ref="container" v-if="history">
+    <div class="history" v-if="history">
 
-        <!-- main graph -->
-        <history-graph 
-            :graph="historyGraph"
-            :selection="selection" 
-            :graphCenter="graphCenter"
-            @selectDataset="onSelectDataset"
-            @hoverNode="onHoverNode" />
+        <!-- main graphs -->
+        <div class="history-graph-container">
+
+            <history-graph 
+                :graph="historyGraph"
+                :selection="selection" 
+                :graphCenter="graphCenter"
+                @selectDataset="onSelectDataset"
+                @hoverNode="onHoverNode" />
+
+            <!-- <history-graph 
+                :graph="historyGraph"
+                :selection="selection" 
+                :graphCenter="graphCenter"
+                @selectDataset="onSelectDataset"
+                @hoverNode="onHoverNode" /> -->
+
+        </div>
 
         <history-editor ref="editor" 
             v-resize:debounce.initial="onEditorResize"
@@ -26,9 +37,9 @@
 
 <script>
 
+import resize from 'vue-resize-directive';
 import { setIntersect } from "@/setUtilities.js";
 
-import resize from 'vue-resize-directive';
 import HistoryGraph from "./HistoryGraph/Graph";
 import HistoryEditor from "./HistoryEditor";
 import HoverSelection from "./HoverSelection";
@@ -39,7 +50,7 @@ import { DatasetNode, generateGraph, generateJoblessGraph }
 
 
 export default {
-    
+
     directives: {
         resize
     },
@@ -90,8 +101,8 @@ export default {
                 return jobless;
             }
             return g;
-        },
-
+        }
+        
     },
 
     watch: {
@@ -136,8 +147,9 @@ export default {
         onHoverNode(o) {
             this.hoverSelection = o;
         },
-        onEditorResize() {
-            console.log("onEditorResize", arguments);
+
+        onEditorResize(container) {
+            console.log("editor resized", arguments);
             // let container = this.$refs.container;
             // let editor = this.$refs.editor;
             // this.graphCenter = {

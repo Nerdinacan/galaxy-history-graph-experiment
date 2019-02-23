@@ -1,5 +1,5 @@
 <template>
-    <section class="history-graph" v-resize:debounce.initial="onResize">
+    <section class="history-graph" ref="container" v-resize:debounce.initial="onResize">
         <svg ref="svg" :height="height" :width="width">
             <rect class="zoomCatcher" :height="height" :width="width" />
             <g class="zoomContainer">
@@ -17,22 +17,20 @@ import { buildDiagram } from "./diagram";
 import Graph from "graph.js";
 
 export default {
-    
+
     directives: {
         resize
     },
 
+    data: () => ({ 
+        height: 0, 
+        width: 0 
+    }),
+
     props: {
         graph: { type: Graph, required: true },
         graphCenter: { type: Object, required: false, default: null },
-        selection: { type: Set, required: true },
-    },
-
-    data() {
-        return {
-            height: 0,
-            width: 0
-        }
+        selection: { type: Set, required: true }
     },
 
     computed: {
@@ -47,10 +45,31 @@ export default {
             }
         },
 
+        graphSize() {
+            let size = { height: 0, width: 0 };
+            let container = this.$refs.container;
+            let svg = this.$refs.svg;
+            if (svg && container) {
+                let spacing = this.svgSpacing;
+                size.height = container.clientHeight - spacing.top - spacing.bottom;
+                size.width = container.clientWidth - spacing.left - spacing.right;
+            }
+            return size;
+        },
+
         updateFn() {
             let fn = buildDiagram(this.$refs.svg, this);
             return graph => this.$nextTick(() => fn(graph));
         }
+
+    },
+
+    methods: {
+
+        onResize() {
+            Object.assign(this, this.graphSize);
+        }
+
     },
 
     watch: {
@@ -72,18 +91,6 @@ export default {
             // if (windowCenter !== null) {
             //     zoomDiagram(this.$refs.svg, windowCenter);
             // }
-        }
-    },
-
-    methods: {
-
-        onResize(container) {
-            let spacing = this.svgSpacing;
-            Object.assign(this, { 
-                height: container.clientHeight - spacing.top - spacing.bottom, 
-                width: container.clientWidth - spacing.left - spacing.right
-            });
-            // this.$nextTick(() => this.updateFn(this.graph));
         }
     },
 
