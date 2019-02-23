@@ -5,6 +5,7 @@
 </template>
 
 <script>
+
 import { Dataset } from "./model";
 
 export default {
@@ -12,4 +13,5 @@ export default {
         dataset: { type: Dataset, required: true }
     }
 }
+
 </script>

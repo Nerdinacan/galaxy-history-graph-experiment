@@ -3,8 +3,10 @@
  * animation methods for free.
  */
 
-import * as d3 from "d3";
-import { graphToD3Inputs } from "./generateGraph";
+import { select, event } from "d3-selection";
+import { zoom, zoomTransform } from "d3-zoom";
+
+// import { graphToD3Inputs } from "./generateGraph";
 import { krakenLayout } from "./krakenLayout";
 
 
@@ -14,7 +16,7 @@ import { krakenLayout } from "./krakenLayout";
 export const buildDiagram = (svgEl, vm) => {
 
     // Install one-time setup fixtures
-    let svg = d3.select(svgEl);
+    let svg = select(svgEl);
     installZoom(svg);
 
     // Build update function
@@ -65,8 +67,6 @@ const drawLinks = (svg, graph) => {
         }
     });
 
-    console.log("links", links);
-
     let u = svg.select(".links")
         // .selectAll("path")
         .selectAll("line")
@@ -104,16 +104,16 @@ function buldArc(d) {
 
 let zoomTarget, 
     zoomCatcher, 
-    zoom;
+    zoomInstance;
 
 const installZoom = (svg) => {
     zoomTarget = svg.select(".zoomContainer");
     zoomCatcher = svg.select(".zoomCatcher");
     let zoomed = () => {
-        zoomTarget.attr("transform", d3.event.transform);
+        zoomTarget.attr("transform", event.transform);
     };
-    zoom = d3.zoom().scaleExtent([1 / 2, 4]).on("zoom", zoomed);
-    zoomCatcher.call(zoom);
+    zoomInstance = zoom().scaleExtent([1 / 2, 4]).on("zoom", zoomed);
+    zoomCatcher.call(zoomInstance);
 }
 
 
@@ -135,12 +135,12 @@ export const zoomDiagram = (svg, windowCenter) => {
         y: windowCenter.y - svgCenter.y
     }
 
-    let current = d3.zoomTransform(zoomCatcher);
+    let current = zoomTransform(zoomCatcher);
     let newZoom = current.translate(delta.x, 0);
 
     // let transformEnd = d3.zoomIdentity.translate(x, 0);
     zoomCatcher.transition()
-        .call(zoom.transform, newZoom)
+        .call(zoomInstance.transform, newZoom)
 }
 
 
@@ -149,28 +149,28 @@ export const zoomDiagram = (svg, windowCenter) => {
 
 // Dragging
 
-const drag = simulation => {
+// const drag = simulation => {
 
-    function dragstarted(d) {
-        if (!d3.event.active)
-            simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        // d.fy = d.y;
-    }
+//     function dragstarted(d) {
+//         if (!event.active)
+//             simulation.alphaTarget(0.3).restart();
+//         d.fx = d.x;
+//         // d.fy = d.y;
+//     }
 
-    function dragged(d) {
-        d.fx = d3.event.x;
-        // d.fy = d3.event.y;
-    }
+//     function dragged(d) {
+//         d.fx = event.x;
+//         // d.fy = d3.event.y;
+//     }
 
-    function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        // d.fy = null;
-    }
+//     function dragended(d) {
+//         if (!event.active) simulation.alphaTarget(0);
+//         d.fx = null;
+//         // d.fy = null;
+//     }
 
-    return d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended);
-}
+//     return d3.drag()
+//         .on("start", dragstarted)
+//         .on("drag", dragged)
+//         .on("end", dragended);
+// }

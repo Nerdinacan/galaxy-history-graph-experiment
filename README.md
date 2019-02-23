@@ -57,3 +57,15 @@ Panels: Slide-in tool selection and tools parameters side-panels
 Loading Indicator: 
     Show different style of "loading" edges and nodes for operations that are pending
 
+
+### Stuff to look at
+
+"@datastructures-js/graph": "^2.0.0",
+"denque": "^1.4.0",
+"depth-first": "^2.0.1",
+"directed-graph-ds": "^1.2.0",
+"directed-graph-map": "^1.2.3",
+"double-ended-queue": "^2.1.0-0",
+"javascript-algorithms-and-data-structures": "^0.0.4",
+"js-data-structs": "^1.1.0",
+"js-data-structure": "^0.7.3",

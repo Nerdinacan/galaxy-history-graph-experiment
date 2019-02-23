@@ -3,7 +3,7 @@
 .history-graph svg {
 
     .links * {
-        stroke: $unselected-color;
+        stroke: $link-color;
         stroke-width: 2px;
     }
 
@@ -14,7 +14,7 @@
     .nodes * {
         cursor: pointer;
         stroke-width: 6px;
-        stroke: $link-color;
+        stroke: $unselected-color;
 
         &.job {
             fill: $job-color;

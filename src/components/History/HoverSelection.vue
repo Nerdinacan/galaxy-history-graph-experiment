@@ -6,9 +6,6 @@
 </template>
 
 <script>
-        
-// import ToolSelection from "./ToolSelection";
-// import ToolParameters from "./ToolParameters";
 
 export default {
     props: {

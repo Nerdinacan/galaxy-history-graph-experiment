@@ -35,8 +35,8 @@ export const littleJobs = buildJobData(littleDatasets, [
     { inputs: [1,2], outputs: [3] }
 ]);
 
-console.log("littleDatasets", littleDatasets);
-console.log("littleJobs", littleJobs);
+// console.log("littleDatasets", littleDatasets);
+// console.log("littleJobs", littleJobs);
 
 
 
@@ -53,8 +53,8 @@ export const bigJobs = buildJobData(bigDatasets, [
     { inputs: [6], outputs: [] }
 ]);
 
-console.log("bigDatasets", bigDatasets);
-console.log("bigJobs", bigJobs);
+// console.log("bigDatasets", bigDatasets);
+// console.log("bigJobs", bigJobs);
 
 
 

@@ -201,23 +201,23 @@ export default {
 
         // needs to open tool panel as well
         onSelectNewTool() {
-            console.log("onSelectNewTool");
+            // console.log("onSelectNewTool");
             this.tool = null;
         },
 
         // unselect tool and open panel
         onUnselectTool() {
-            console.log("onUnselectTool");
+            // console.log("onUnselectTool");
             this.tool = null;
         },
 
         onToolSelected(tool) {
-            console.log("onToolSelected", tool);
+            // console.log("onToolSelected", tool);
             this.tool = tool;
         },
 
         onParamsValid(isValid, params) {
-            console.log("onParamsValid", isValid, params);
+            // console.log("onParamsValid", isValid, params);
         },
 
         // Fake job creation
