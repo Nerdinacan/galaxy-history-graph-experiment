@@ -118,9 +118,7 @@ main {
 .history {
 
     @include typography();
-    @include parentStatusToggles(".dataset-selection");
-    @include parentStatusToggles(".tool-list");
-    @include parentStatusToggles(".tool-parameters");
+    
     
 
     a.button {
@@ -134,6 +132,9 @@ main {
     .history-editor-panels {
         z-index: 1;
         height: 100vh;
+        @include parentStatusToggles(".dataset-selection");
+        @include parentStatusToggles(".tool-list");
+        @include parentStatusToggles(".tool-parameters");
         @include historyPanelFlexContainer();
         @include historyHandleClickThrough();
         

@@ -5,8 +5,6 @@
 
 import { select, event } from "d3-selection";
 import { zoom, zoomTransform } from "d3-zoom";
-
-// import { graphToD3Inputs } from "./generateGraph";
 import { krakenLayout } from "./krakenLayout";
 
 

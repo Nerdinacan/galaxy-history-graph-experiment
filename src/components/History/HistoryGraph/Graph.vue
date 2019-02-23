@@ -80,7 +80,6 @@ export default {
 
         graphCenter(windowCenter) {
             // console.log("graphCenter", windowCenter);
-            // debugger;
             // if (windowCenter !== null) {
             //     zoomDiagram(this.$refs.svg, windowCenter);
             // }

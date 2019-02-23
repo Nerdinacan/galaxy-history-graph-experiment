@@ -20,8 +20,8 @@ export function Job(props = {}) {
 }
 
 export function Tool(props = {}) {
-    this.id = null;
     this.name = uuidv4();
+    this.id = this.name;
     Object.assign(this, props);
 }
 

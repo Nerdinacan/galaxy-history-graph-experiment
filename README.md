@@ -33,17 +33,16 @@ x Perform an update of the graph
 x Zoom
 x Pan
 x Select Event
+x Diagram:  Build "kraken" layout instead of stock force-directed layout, less motion, try to avoid crossing the edges as much
 
-Zoom/Pan diagram to center on selected node
+Create "Windowed" scrollable graph, shows portion of history within designated "radius" of selected point, move with mouse-wheel by picking random parent
 
-Created "Windowed" scrollable graph, shows portion of history within designated "radius"
-of selected point, move with mouse-wheel by picking random parent
+Zoom/Pan diagram to center on selected node, use mouse wheel to switch to nearby node
 
-Diagram:  Fly-out labels for tags, size, etc. on rollover in main graph instead
-of static rollover location
+Center graph properly
 
-Diagram:  Build "kraken" layout instead of stock force-directed layout, less
-motion, try to avoid crossing the edges as much
+
+Diagram:  Fly-out labels for tags, size, etc. on rollover in main graph instead of static rollover location
 
 Diagram: edge links should be arrows with little pointers indicating direction of processing
 

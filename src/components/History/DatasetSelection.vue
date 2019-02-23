@@ -1,13 +1,13 @@
 <template>
     <section class="dataset-selection">
         
+        
+        <!-- list of selected inputs -->
         <header v-if="hasSelection">
             <h4>Inputs</h4>
         </header>
-
-        <!-- list of selected inputs -->
         <ol>
-            <li v-for="ds in selectedDatasets">
+            <li v-for="ds of selectedDatasets">
                 <selected-dataset class="dataset" :dataset="ds" 
                     @click="$emit('clickDataset', $event)" />
             </li>
@@ -17,13 +17,17 @@
         </ol>
     
         <!-- selected tool -->
-        <h4>Operaton</h4>
+        <header>
+        	<h4>Operaton</h4>
+        </header>
         <a class="button" :class="{ tool }" @click.prevent="$emit('unselectTool')">
             {{ toolLinkLabel }}
         </a>
 
         <!-- operation buttons -->
-        <h4>Actions</h4>
+        <header>
+            <h4>Actions</h4>
+        </header>
         <slot></slot>
         
     </section>
@@ -39,13 +43,13 @@ export default {
         SelectedDataset
     },
     props: {
-        selectedDatasets: { type: Array, required: true },
+        selectedDatasets: { type: Set, required: true },
         hoverDataset: { type: Dataset, required: false, default: null },
         tool: { type: Tool, required: false, default: null }
     },
     computed: {
         hasSelection() {
-            return this.selectedDatasets.length > 0;
+            return this.selectedDatasets.size > 0;
         },
         toolLinkLabel() {
             return this.tool ? this.tool.name.substr(0,10) + "...": "Tool goes here";
