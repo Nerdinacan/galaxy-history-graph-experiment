@@ -5,20 +5,17 @@
             :selectedDatasets="selectedDatasets"
             :hoverDataset="hoverDataset" 
             :tool="tool"
-            @clickDataset="unselectDataset"
-            @selectNewTool="onSelectNewTool"
-            @unselectTool="onUnselectTool">
+            @clickDataset="$emit('unselectDataset', $event)"
+            @clickTool="tool = null">
             
             <ul>
-                <li>
-                    <a :class="buttonClasses"
-                        @click.prevent="$emit('createJob', { tool, toolParams })">
+                <li v-if="hasTool">
+                    <a @click.prevent="$emit('createJob', { tool, toolParams })">
                         Create Job
                     </a>
                 </li>
-                <li>
-                    <a v-if="selectedDatasets.size > 1" 
-                        :class="buttonClasses">
+                <li v-if="hasSelection">
+                    <a @click.prevent="onGroup">
                         Group Selected Nodes
                     </a>
                 </li>
@@ -56,8 +53,9 @@ import { loadHistoryById } from "./service";
 import { DatasetNode } from "./HistoryGraph/generateGraph";
 import { Dataset } from "./model";
 
+
 export default {
-    
+
     components: { 
         DatasetSelection, 
         ToolList,
@@ -85,6 +83,7 @@ export default {
         hasSelection() {
             return this.selectedDatasets.size > 0;
         },
+
         hasTool() {
             return this.tool !== null;
         },
@@ -96,41 +95,21 @@ export default {
                 "tool-list": this.toggleList,
                 "tool-parameters": this.toggleParams
             }
-        },
-
-         // button appearance
-         buttonClasses() {
-            return {
-                "disabled": !this.hasTool
-            }
         }
     },
+
     methods: {
   
-        unselectDataset(id) {
-            this.$emit("unselectDataset", id);
-        },
-
-
-        // DO WE NEED 3?
-
-        // needs to open tool panel as well
-        onSelectNewTool() {
-            this.tool = null;
-        },
-        // unselect tool and open panel
-        onUnselectTool() {
-            // console.log("onUnselectTool");
-            this.tool = null;
-        }, 
-        onToolSelected(tool) {
-            // console.log("onToolSelected", tool);
+        onToolSelected(tool = null) {
             this.tool = tool;
-        },
+        }, 
 
-        
         onParamsValid(isValid, params) {
             console.log("onParamsValid", isValid, params);
+        },
+
+        onGroup() {
+            console.log("onGroup");
         }
     }
 }
