@@ -1,13 +1,20 @@
 import Graph from "graph.js";
 
+// "directed-graph-js"
+// https://github.com/Aveek-Saha/js-data-structs
 
-export function DatasetNode({ id, type }) {
+
+export function DatasetNode(props) {
     this.selected = false;
-    Object.assign(this, { id, type });
+    this.rank = 0;
+    this.col = 0;
+    Object.assign(this, props);
 }
 
-export function JobNode({ id, type }) {
-    Object.assign(this, { id, type });
+export function JobNode(props) {
+    this.rank = 0;
+    this.col = 0;
+    Object.assign(this, props);
 }
 
 // Graph of ids only
@@ -21,8 +28,10 @@ export function generateGraph({ datasets, jobs }) {
     jobs.forEach(job => g.addVertex(String(job.id), new JobNode(job)));
 
     jobs.forEach(job => {
-        job.inputs.forEach(id => g.createNewEdge(String(id), String(job.id)));
-        job.outputs.forEach(id => g.createNewEdge(String(job.id), String(id)));
+        job.inputs.forEach(id => {
+            g.addNewEdge(String(id), String(job.id));
+        });
+        job.outputs.forEach(id => g.addNewEdge(String(job.id), String(id)));
     });
 
     return g;

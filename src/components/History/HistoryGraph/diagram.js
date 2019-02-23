@@ -8,72 +8,41 @@ import { graphToD3Inputs } from "./generateGraph";
 import { krakenLayout } from "./krakenLayout";
 
 
+// Build a function that can be called when the graph
+// changes to update the positions of the nodes
+
 export const buildDiagram = (svgEl, vm) => {
 
+    // Install one-time setup fixtures
     let svg = d3.select(svgEl);
-
-    // Install one-time fixtures
     installZoom(svg);
 
-    // Updates
+    // Build update function
     return (graph) => {
-
-        // adds some props based on graph shapes
-        krakenLayout(svgEl, graph, 40);
-
-        updateSelectionOnGraph(svgEl);
-
-        let width = svgEl.clientWidth;
-        let height = svgEl.clientHeight;
-        let { links, nodes } = graphToD3Inputs(graph);
-        let updateNodes = drawNodes(svg, nodes, vm);
-        let updateLinks = drawLinks(svg, links);
-        let collisionForce = d3.forceCollide(30).strength(1).iterations(100);
-
-
-        let simulation =
-            d3.forceSimulation(nodes)
-                // .force("charge", d3.forceManyBody())
-                .force("collision", collisionForce)
-                .force("center", d3.forceCenter(width / 2, height / 2))
-                .force("link", d3.forceLink().links(links).strength(0))
-                // .force("y", d3.forceY(d => {
-                //     if (d.isSink) {
-                //         return -1000;
-                //     }
-                //     if (d.isSource) {
-                //         return 1000;
-                //     }
-                //     return 0;
-                // }))
-                .force("x", d3.forceX())
-                .on("tick", () => {
-                    updateNodes();
-                    updateLinks();
-                })
-                // .tick(300);
+        krakenLayout(graph);
+        drawNodes(svg, graph, vm);
+        drawLinks(svg, graph, vm);
     }
 }
 
-const drawNodes = (svg, nodes, vm) => {
+const drawNodes = (svg, graph, vm) => {
+
+    let nodes = Array.from(graph).map(([k,v]) => v);
 
     // updates
     let u = svg.select(".nodes")
         .selectAll("circle")
-        .data(nodes, d => String(d.id));
+        .data(nodes, d => d.id);
 
     // enters
     let e = u.enter()
         .append("circle")
-        .attr("r", d => d.type == "job" ? 8 : 12)
+        .attr("r", d => d.type == "job" ? 12 : 16)
         .attr("class", d => d.type)
-        .on("mouseover", d => {
-            vm.$emit("hoverNode", d);
-        })
-        .on("mouseout", d => {
-            vm.$emit("hoverNode", null);
-        })
+        .on("mouseover", d => vm.$emit("hoverNode", d))
+        .on("mouseout", d => vm.$emit("hoverNode", null))
         .on("click", function (d) {
+            // TODO: make this less specific
             if (d.type == "dataset") {
                 vm.$emit("selectDataset", d.id);
             }
@@ -81,35 +50,41 @@ const drawNodes = (svg, nodes, vm) => {
 
     u.exit().remove();
 
-    // update location
-    return function () {
-        e.merge(u)
-            .classed("selected", d => d.selected)
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y)
-    }
+    e.merge(u)
+        .classed("selected", d => d.selected)
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y);
 }
 
-const drawLinks = (svg, links) => {
+const drawLinks = (svg, graph) => {
+
+    let links = Array.from(graph.edges()).map(([sourceKey, targetKey]) => {
+        return {
+            source: graph.vertexValue(sourceKey),
+            target: graph.vertexValue(targetKey)
+        }
+    });
+
+    console.log("links", links);
 
     let u = svg.select(".links")
+        // .selectAll("path")
         .selectAll("line")
-        .data(links);
+        .data(links, d => `${d.source.id}_${d.target.id}`);
 
     let e = u.enter()
+        // .append("path")
         .append("line")
         .attr("class", "link")
 
     u.exit().remove();
 
-    return function () {
-        e.merge(u)
-            // .attr("d", buldArc);
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
-    }
+    e.merge(u)
+        // .attr("d", buldArc);
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
 }
 
 function buldArc(d) {
@@ -123,7 +98,6 @@ function buldArc(d) {
         d.target.x + "," +
         d.target.y;
 }
-
 
 
 // Zooming
@@ -141,6 +115,8 @@ const installZoom = (svg) => {
     zoom = d3.zoom().scaleExtent([1 / 2, 4]).on("zoom", zoomed);
     zoomCatcher.call(zoom);
 }
+
+
 
 // Zoom diagram programatically to indicated point
 // https://www.datamake.io/blog/d3-zoom#prog-zoom
@@ -165,16 +141,6 @@ export const zoomDiagram = (svg, windowCenter) => {
     // let transformEnd = d3.zoomIdentity.translate(x, 0);
     zoomCatcher.transition()
         .call(zoom.transform, newZoom)
-}
-
-
-// Mutate existing diagram to update selection instead
-// of drawing the whole thing over, do I need to do this
-// or does the d3 update pattern handle it?
-
-export const updateSelectionOnGraph = (svg) => {
-    d3.select(svg).selectAll("circle")
-        .classed("selected", d => d.selected)
 }
 
 

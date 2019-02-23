@@ -3,13 +3,17 @@
 .history-graph svg {
 
     .links * {
-        stroke: $link-color;
-        stroke-dasharray: 2px 2px;
+        stroke: $unselected-color;
+        stroke-width: 2px;
+    }
+
+    .links path {
+        fill: none;
     }
     
     .nodes * {
         cursor: pointer;
-        stroke-width: 4px;
+        stroke-width: 6px;
         stroke: $link-color;
 
         &.job {
@@ -19,7 +23,6 @@
         
         &.dataset {
             fill: white;
-            opacity: 0.8;
             &:hover {
                 stroke: $dataset-color;
                 opacity: 1.0;

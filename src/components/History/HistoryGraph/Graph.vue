@@ -14,7 +14,7 @@
 
 import resize from 'vue-resize-directive';
 import { generateGraph, generateJoblessGraph } from "./generateGraph";
-import { buildDiagram, updateSelectionOnGraph, zoomDiagram } from "./diagram";
+import { buildDiagram } from "./diagram";
 
 export default {
     
@@ -23,6 +23,7 @@ export default {
     },
 
     props: {
+        jobless: { type: Boolean, required: false, default: false },
         graphCenter: { type: Object, required: false, default: null },
         selection: { type: Set, required: true },
         history: { type: Object, required: true }
@@ -40,9 +41,11 @@ export default {
         // full data graph
         graph() {
             let g = generateGraph(this.history);
+            if (this.jobless) {
+                let jobless = generateJoblessGraph(g); 
+                return jobless;
+            }
             return g;
-            // let jobless = generateJoblessGraph(g); 
-            // return jobless;
         },
 
         svgSpacing() {
@@ -69,15 +72,18 @@ export default {
 
         // mutate graph instead of redrawing whole thing
         selection(newSelection) {
+            console.log("selection changed", newSelection);
             for(let [key, node] of this.graph)
                 node.selected = newSelection.has(key);
-            updateSelectionOnGraph(this.$refs.svg);
+            this.updateFn(this.graph);
         },
 
         graphCenter(windowCenter) {
-            if (windowCenter !== null) {
-                zoomDiagram(this.$refs.svg, windowCenter);
-            }
+            // console.log("graphCenter", windowCenter);
+            // debugger;
+            // if (windowCenter !== null) {
+            //     zoomDiagram(this.$refs.svg, windowCenter);
+            // }
         }
     },
 

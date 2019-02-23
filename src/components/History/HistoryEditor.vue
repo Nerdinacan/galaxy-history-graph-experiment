@@ -5,6 +5,7 @@
             :history="history"
             :selection="selection" 
             :graphCenter="graphCenter"
+            :jobless="jobless"
             @selectDataset="toggleSelectDataset"
             @hoverNode="onHoverNode" />
 
@@ -85,6 +86,7 @@ export default {
     },
 
     props: {
+        jobless: { type: Boolean, required: false, default: false },
         id: { type: String, required: true }
     },
 
@@ -233,8 +235,8 @@ export default {
             });
 
             let h = Object.assign({}, this.history);
-            h.datasets = [...h.datasets, newDs ];
-            h.jobs = [...h.jobs, newJob ];
+            h.datasets = [ ...h.datasets, newDs ];
+            h.jobs = [ ...h.jobs, newJob ];
 
             this.history = h;
             // Honestly can't remember why I have to do this...

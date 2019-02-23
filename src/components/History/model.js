@@ -6,13 +6,13 @@
 import uuidv4 from "uuid/v4";
 
 export function Dataset(props = {}) {
-    this.id = uuidv4();
+    this.id = null;
     this.type = "dataset";
     Object.assign(this, props);
 }
 
 export function Job(props = {}) {
-    this.id = uuidv4();
+    this.id = null;
     this.type = "job";
     this.inputs = [];
     this.outputs = [];
@@ -20,7 +20,7 @@ export function Job(props = {}) {
 }
 
 export function Tool(props = {}) {
-    this.id = uuidv4();
+    this.id = null;
     this.name = uuidv4();
     Object.assign(this, props);
 }

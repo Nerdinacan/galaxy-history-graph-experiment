@@ -2845,10 +2845,20 @@ delegates@^1.0.0:
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=
 
+denque@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/denque/-/denque-1.4.0.tgz#79e2f0490195502107f24d9553f374837dabc916"
+  integrity sha512-gh513ac7aiKrAgjiIBWZG0EASyDF9p4JMWwKA8YU5s9figrL5SRNEMT6FDynsegakuhWd1wVqTvqvqAoDxw7wQ==
+
 depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+
+depth-first@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/depth-first/-/depth-first-2.0.1.tgz#b5c2a0a8c310b06894e52032c1dca2fa5c0022be"
+  integrity sha1-tcKgqMMQsGiU5SAywdyi+lwAIr4=
 
 des.js@^1.0.0:
   version "1.0.0"
@@ -2888,6 +2898,11 @@ dir-glob@^2.0.0, dir-glob@^2.2.1:
   integrity sha512-f9LBi5QWzIW3I6e//uxZoLBlUt9kcp66qo0sSCxL6YZKc75R1c4MFCoe/LaZiBGmgujvQdxc5Bn3QhfyvK5Hsw==
   dependencies:
     path-type "^3.0.0"
+
+directed-graph-ds@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/directed-graph-ds/-/directed-graph-ds-1.2.0.tgz#d07e9aaa41da4779e6a72236005f8667886b2061"
+  integrity sha512-rMyRM4FTg4Bj7iR2jC85Jxc82e/vkc60kQER3g4JAOYL+PTeWDzgbN7VGVFi6MB4UOwEo+L9TG68hkBXtE/lsw==
 
 directed-graph-map@^1.2.3:
   version "1.2.3"
@@ -2975,6 +2990,11 @@ dot-prop@^4.1.1:
   integrity sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==
   dependencies:
     is-obj "^1.0.0"
+
+double-ended-queue@^2.1.0-0:
+  version "2.1.0-0"
+  resolved "https://registry.yarnpkg.com/double-ended-queue/-/double-ended-queue-2.1.0-0.tgz#103d3527fd31528f40188130c841efdd78264e5c"
+  integrity sha1-ED01J/0xUo9AGIEwyEHv3XgmTlw=
 
 duplexer@^0.1.1:
   version "0.1.1"
@@ -4462,6 +4482,11 @@ js-base64@^2.1.8:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
   integrity sha512-M7kLczedRMYX4L8Mdh4MzyAMM9O5osx+4FcOQuTvr3A9F2D9S5JXheN0ewNbrvK2UatkTRhL5ejGmGSjNMiZuw==
+
+js-data-structs@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/js-data-structs/-/js-data-structs-1.1.0.tgz#9cc78df8f5bdb8208b41a2bc112b0de8baa9b32c"
+  integrity sha512-D5vglur1CAfjquabsavjdQNL+R9cY5EHvzLEd1D9XMIYiGJiEuzMtueSbE+hJk5mBvsBthjoYItXTfwjPq5G4w==
 
 js-data-structure@^0.7.3:
   version "0.7.3"
@@ -7421,6 +7446,11 @@ tough-cookie@~2.4.3:
   dependencies:
     psl "^1.1.24"
     punycode "^1.4.1"
+
+traversals@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/traversals/-/traversals-1.0.15.tgz#4769036aea2c21956340522c71325e08e68db3f5"
+  integrity sha512-bYKOp6AEc8uaYJnYuHm2sYh7g9v3Mv2UyP7tXNSIJPJGtH1M4gjNl6FBqLV+UOl2MrZaGK42sdTcL9fG+0E0YQ==
 
 trim-newlines@^1.0.0:
   version "1.0.0"

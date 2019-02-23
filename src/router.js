@@ -13,9 +13,12 @@ const routes = [
     },
     { 
         name: 'history', 
-        path: '/history/:id', 
+        path: '/history/:id/:jobless?', 
         component: HistoryEditor, 
-        props: router => ({ id: router.params.id })
+        props: router => ({ 
+            id: router.params.id, 
+            jobless: !!router.params.jobless
+        })
     }
 ];
 
