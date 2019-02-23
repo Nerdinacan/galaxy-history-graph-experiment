@@ -6,7 +6,7 @@
             :hoverDataset="hoverDataset" 
             :tool="tool"
             @clickDataset="$emit('unselectDataset', $event)"
-            @clickTool="tool = null">
+            @clickTool="onToolClick">
             
             <ul>
                 <li v-if="hasTool">
@@ -19,25 +19,17 @@
                         Group Selected Nodes
                     </a>
                 </li>
-                <li>
-                    <a @click.prevent="toggleList = !toggleList">
-                        Toggle List
-                    </a>
-                </li>
-                <li>
-                    <a @click.prevent="toggleParams = !toggleParams">
-                        Toggle Params
-                    </a>
-                </li>
             </ul>
 
         </dataset-selection>
 
-        <tool-list :history="history" 
+        <tool-list
+            :history="history" 
             :selectedDatasets="selectedDatasets" 
             @toolSelected="onToolSelected" />
 
-        <tool-parameters :tool="tool"
+        <tool-parameters 
+            :tool="tool"
             @paramsValid="onParamsValid" />
 
     </div>
@@ -72,9 +64,7 @@ export default {
     data() {
         return {
             tool: null,
-            toolParams: {},
-            toggleList: false,
-            toggleParams: false
+            toolParams: {}
         }
     },
 
@@ -92,24 +82,35 @@ export default {
         statusClasses() {
             return {
                 "dataset-selection": this.hasSelection,
-                "tool-list": this.toggleList,
-                "tool-parameters": this.toggleParams
+                "tool-list": this.hasSelection && !this.hasTool,
+                "tool-parameters": this.hasSelection && this.hasTool
             }
         }
     },
 
     methods: {
   
-        onToolSelected(tool = null) {
-            this.tool = tool;
-        }, 
-
         onParamsValid(isValid, params) {
             console.log("onParamsValid", isValid, params);
         },
 
         onGroup() {
             console.log("onGroup");
+        },
+
+        // when selected tool box is clicked
+        onToolClick(tool) {
+            debugger;
+            if (this.tool) {
+                this.tool = null;
+            }
+            this.toggleList = true;
+        },
+
+        // when tool is selected from th tool list
+        onToolSelected(tool = null) {
+            this.tool = tool;
+            this.toggleList = false;
         }
     }
 }

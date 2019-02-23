@@ -1,11 +1,11 @@
 <template>
     <div class="history" ref="container" v-if="history">
-        
+
+        <!-- main graph -->
         <history-graph 
-            :history="history"
+            :graph="historyGraph"
             :selection="selection" 
             :graphCenter="graphCenter"
-            :jobless="jobless"
             @selectDataset="onSelectDataset"
             @hoverNode="onHoverNode" />
 
@@ -26,14 +26,17 @@
 
 <script>
 
+import { setIntersect } from "@/setUtilities.js";
+
+import resize from 'vue-resize-directive';
 import HistoryGraph from "./HistoryGraph/Graph";
 import HistoryEditor from "./HistoryEditor";
 import HoverSelection from "./HoverSelection";
 
 import { loadHistoryById, saveNewJob } from "./service";
-import { DatasetNode } from "./HistoryGraph/generateGraph";
-import resize from 'vue-resize-directive';
-import { setIntersect } from "@/setUtilities.js";
+import { DatasetNode, generateGraph, generateJoblessGraph } 
+    from "./HistoryGraph/generateGraph";
+
 
 export default {
     
@@ -77,6 +80,16 @@ export default {
                 }
             }
             return null;
+        },
+
+        // full data graph
+        historyGraph() {
+            let g = generateGraph(this.history);
+            if (this.jobless) {
+                let jobless = generateJoblessGraph(g); 
+                return jobless;
+            }
+            return g;
         },
 
     },

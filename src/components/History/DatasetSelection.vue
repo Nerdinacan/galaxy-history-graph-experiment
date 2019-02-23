@@ -1,7 +1,6 @@
 <template>
     <section class="dataset-selection">
 
-
         <header v-if="hasSelection">
             <h4>Inputs</h4>
         </header>

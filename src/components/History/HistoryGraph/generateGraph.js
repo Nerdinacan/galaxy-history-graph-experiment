@@ -1,9 +1,5 @@
 import Graph from "graph.js";
 
-// "directed-graph-js"
-// https://github.com/Aveek-Saha/js-data-structs
-
-
 export function DatasetNode(props) {
     this.selected = false;
     this.rank = 0;

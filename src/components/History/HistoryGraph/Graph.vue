@@ -13,8 +13,8 @@
 <script>
 
 import resize from 'vue-resize-directive';
-import { generateGraph, generateJoblessGraph } from "./generateGraph";
 import { buildDiagram } from "./diagram";
+import Graph from "graph.js";
 
 export default {
     
@@ -23,10 +23,9 @@ export default {
     },
 
     props: {
-        jobless: { type: Boolean, required: false, default: false },
+        graph: { type: Graph, required: true },
         graphCenter: { type: Object, required: false, default: null },
         selection: { type: Set, required: true },
-        history: { type: Object, required: true }
     },
 
     data() {
@@ -37,16 +36,6 @@ export default {
     },
 
     computed: {
-
-        // full data graph
-        graph() {
-            let g = generateGraph(this.history);
-            if (this.jobless) {
-                let jobless = generateJoblessGraph(g); 
-                return jobless;
-            }
-            return g;
-        },
 
         svgSpacing() {
             let cs = getComputedStyle(this.$refs.svg);
@@ -79,7 +68,7 @@ export default {
         },
 
         graphCenter(windowCenter) {
-            // console.log("graphCenter", windowCenter);
+            console.log("graphCenter", windowCenter);
             // if (windowCenter !== null) {
             //     zoomDiagram(this.$refs.svg, windowCenter);
             // }
