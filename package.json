@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "uploadTest": "aws s3 cp dist s3://history-diagram --recursive",
+    "deploy": "npm run build && npm run uploadTest"
   },
   "dependencies": {
     "animatewithsass": "^3.2.1",
