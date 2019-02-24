@@ -2,14 +2,14 @@
  * D3 layout for kraken directed graph
  */
 
-import { dfs } from "./dfs";
+import { dfs } from "./graphSearches";
 
 // baseline padding for positioning nodes
 const hSpacing = 80, vSpacing = 80;
 
 export const krakenLayout = (graph) => {
 
-    console.log("kracken running");
+    // console.log("krakenLayout running");
 
     // column sorter
     let columnSortFn = buildSortFn(graph);

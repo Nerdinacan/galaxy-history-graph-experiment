@@ -4,13 +4,13 @@
         <!-- main graphs -->
         <div class="history-graph-container">
             <history-graph 
-                :graph="historyGraph"
+                :graph="historyFocusedOnSelection"
                 :selection="selection" 
                 :graphCenter="graphCenter"
                 @selectDataset="onSelectDataset"
                 @hoverNode="onHoverNode" />
             <history-graph 
-                :graph="historyGraph"
+                :graph="entireHistory"
                 :selection="selection" 
                 :graphCenter="graphCenter"
                 @selectDataset="onSelectDataset"
@@ -27,7 +27,7 @@
 
         <hover-selection 
             v-if="hoverSelection" 
-            :graph="historyGraph"
+            :graph="fullGraph"
             :itemKey="hoverSelection" />
 
         <!-- job node toggle -->
@@ -47,7 +47,7 @@ import HistoryGraph from "./HistoryGraph/Graph";
 import HistoryEditor from "./HistoryEditor";
 import HoverSelection from "./HoverSelection";
 
-import { DatasetNode, generateGraph, generateJoblessGraph } 
+import { DatasetNode, generateGraph, generateJoblessGraph, focusedGraph } 
     from "./HistoryGraph/generateGraph";
 
 
@@ -103,13 +103,24 @@ export default {
             return null;
         },
 
-        // full data graph
-        historyGraph() {
-            let graph = generateGraph(this.history);
-            if (!this.showJobs) {
-                graph = generateJoblessGraph(graph);
-            }
-            return graph;
+        // Graphs
+
+        fullGraph() {
+            return generateGraph(this.history);
+        },
+
+        joblessGraph() {
+            return generateJoblessGraph(this.fullGraph);
+        },
+
+        entireHistory() {
+            return this.showJobs ? this.fullGraph : this.joblessGraph;
+        },
+
+        // history graph focused around the hoverselection
+        historyFocusedOnSelection() {
+            // return this.entireHistory;
+            return focusedGraph(this.fullGraph, this.hoverSelection, 2);
         }
         
     },
@@ -143,7 +154,10 @@ export default {
             this.selection = s;
         },
         onHoverNode(o) {
-            this.hoverSelection = o;
+            // keeps existing hover even on mouse-out
+            if (o) {
+                this.hoverSelection = o;
+            }
         },
         onEditorResize(container) {
             console.log("editor resized", arguments);

@@ -90,9 +90,9 @@ const drawLinks = (svg, graph) => {
 
 function buildPath(d) {
     
-    console.log("d", d.source.type);
-    console.log("d.source.rank", d.source.rank);
-    console.log("d.target.rank", d.target.rank);
+    // console.log("d", d.source.type);
+    // console.log("d.source.rank", d.source.rank);
+    // console.log("d.target.rank", d.target.rank);
 
     if (Math.abs(d.source.rank - d.target.rank) == 1) {
         // draw straight line
