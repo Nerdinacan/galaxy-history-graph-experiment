@@ -11,12 +11,12 @@
                 @selectDataset="onSelectDataset"
                 @hoverNode="onHoverNode" />
 
-            <!-- <history-graph 
+            <history-graph 
                 :graph="historyGraph"
                 :selection="selection" 
                 :graphCenter="graphCenter"
                 @selectDataset="onSelectDataset"
-                @hoverNode="onHoverNode" /> -->
+                @hoverNode="onHoverNode" />
 
         </div>
 

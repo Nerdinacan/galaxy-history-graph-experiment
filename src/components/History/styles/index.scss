@@ -102,10 +102,6 @@ main {
     height: 100vh;
 }
 
-.history,
-.history-graph {
-    @include fill();
-}
 
 .history-editor-panels {
     position: absolute;
@@ -118,18 +114,22 @@ main {
 .history {
 
     @include typography();
-    
+    @include fill();
     
     a.button {
         @include boringSquareButton();
     }
 
     .history-graph-container {
+        @include fill();
         display: flex;
         z-index: 0;
-        // .history-graph {
-        //     border: 1px solid red;
-        // }
+        .history-graph {
+            flex: 1;
+            svg {
+                @fill();
+            }
+        }
     }
 
     

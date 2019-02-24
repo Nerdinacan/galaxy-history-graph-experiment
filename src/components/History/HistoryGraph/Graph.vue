@@ -1,7 +1,6 @@
 <template>
     <section class="history-graph" ref="container" v-resize:debounce.initial="onResize">
-        <svg ref="svg" :height="height" :width="width">
-            <rect class="zoomCatcher" :height="height" :width="width" />
+        <svg ref="svg" :height="height" :width="width" v-zoom="'.zoomContainer'">
             <g class="zoomContainer">
                 <g class="links"></g>
                 <g class="nodes"></g>
@@ -10,16 +9,19 @@
     </section>
 </template>
 
+
 <script>
 
-import resize from 'vue-resize-directive';
+import zoom from "./zoom";
+import resize from "vue-resize-directive";
 import { buildDiagram } from "./diagram";
 import Graph from "graph.js";
+
 
 export default {
 
     directives: {
-        resize
+        resize, zoom
     },
 
     data: () => ({ 

@@ -4,7 +4,6 @@
  */
 
 import { select, event } from "d3-selection";
-import { zoom, zoomTransform } from "d3-zoom";
 import { krakenLayout } from "./krakenLayout";
 
 
@@ -15,7 +14,7 @@ export const buildDiagram = (svgEl, vm) => {
 
     // Install one-time setup fixtures
     let svg = select(svgEl);
-    installZoom(svg);
+    // installZoom(svg);
 
     // Build update function
     return (graph) => {
@@ -99,50 +98,6 @@ function buldArc(d) {
         dr + "," + dr + " 0 0,1 " +
         d.target.x + "," +
         d.target.y;
-}
-
-
-// Zooming
-
-let zoomTarget, 
-    zoomCatcher, 
-    zoomInstance;
-
-const installZoom = (svg) => {
-    zoomTarget = svg.select(".zoomContainer");
-    zoomCatcher = svg.select(".zoomCatcher");
-    let zoomed = () => {
-        zoomTarget.attr("transform", event.transform);
-    };
-    zoomInstance = zoom().scaleExtent([1 / 2, 4]).on("zoom", zoomed);
-    zoomCatcher.call(zoomInstance);
-}
-
-
-
-// Zoom diagram programatically to indicated point
-// https://www.datamake.io/blog/d3-zoom#prog-zoom
-
-let lastX = 0;
-
-export const zoomDiagram = (svg, windowCenter) => {
-
-    let svgCenter = {
-        x: svg.clientWidth / 2,
-        y: svg.clientHeight / 2
-    }
-
-    let delta = {
-        x: windowCenter.x - svgCenter.x,
-        y: windowCenter.y - svgCenter.y
-    }
-
-    let current = zoomTransform(zoomCatcher);
-    let newZoom = current.translate(delta.x, 0);
-
-    // let transformEnd = d3.zoomIdentity.translate(x, 0);
-    zoomCatcher.transition()
-        .call(zoomInstance.transform, newZoom)
 }
 
 
