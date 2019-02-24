@@ -25,8 +25,6 @@ let buildJobData = (datasets, jobData) => {
 }
 
 
-
-
 // Little Set
 
 export const littleDatasets = buildDatasets(4);
@@ -36,14 +34,10 @@ export const littleJobs = buildJobData(littleDatasets, [
     { inputs: [1,2], outputs: [3] }
 ]);
 
-// console.log("littleDatasets", littleDatasets);
-// console.log("littleJobs", littleJobs);
-
-
 
 // Big Set
 
-export const bigDatasets = buildDatasets(10);
+export const bigDatasets = buildDatasets(11);
 
 export const bigJobs = buildJobData(bigDatasets, [
     { inputs: [1,0], outputs: [2] },
@@ -51,12 +45,8 @@ export const bigJobs = buildJobData(bigDatasets, [
     { inputs: [0,3], outputs: [4,5,6] },
     { inputs: [2,3], outputs: [7] },
     { inputs: [4,5], outputs: [8] },
-    { inputs: [6], outputs: [] }
+    { inputs: [6], outputs: [9] }
 ]);
-
-// console.log("bigDatasets", bigDatasets);
-// console.log("bigJobs", bigJobs);
-
 
 
 // 2 histories
@@ -120,7 +110,6 @@ function buildRandomJobMap(jobCount) {
             let val = randomNum(0, lastDS + inputCount);
             lastDS = Math.max(lastDS, val);
             return val;
-            // return `dataset-${val}`;
         });
         let inputSet = new Set(inputArray);
 
@@ -131,7 +120,6 @@ function buildRandomJobMap(jobCount) {
             let val = randomNum(lastDS + inputCount, lastDS + inputCount + outputCount);
             lastDS = Math.max(lastDS, val);
             return val;
-            // return `dataset-${val}`;
         });
         let outputSet = new Set(outputArray);
 

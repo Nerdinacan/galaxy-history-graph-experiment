@@ -19,7 +19,7 @@ export const krakenLayout = (graph) => {
         // more edges pushes the node to the right
         // (to the end of the list)
         let sortedColumns = Array.from(columns).sort(columnSortFn);
-        console.log(rank, sortedColumns);
+        // console.log(rank, sortedColumns);
 
         // turn columns into nodes, mutate nodes to set x/y
         sortedColumns
@@ -54,18 +54,21 @@ function generateRankPlacement(graph) {
     let placement = new Map(/* rank, Set(columns) */);
     
     // grab any source node from the graph data
-    let { value: [ sourceKey ] } = graph.sources().next();
+    // let { value: [ sourceKey ] } = graph.sources().next();
  
-    // traverse (dfs) the graph starting at the selected source node
-    for(let { key, rank } of dfs(graph, sourceKey)) {
+    for(let [sourceKey, sourceNode] of graph.sources()) {
 
-        // source? If so, shove to the top
-        let myRank = graph.inDegree(key) == 0 ? 0 : rank;
-        
-        if (!placement.has(myRank)) 
-            placement.set(myRank, new Set());
-
-        placement.get(myRank).add(key);
+        // traverse (dfs) the graph starting at the selected source node
+        for(let { key, rank } of dfs(graph, sourceKey)) {
+    
+            // source? If so, shove to the top
+            let myRank = graph.inDegree(key) == 0 ? 0 : rank;
+            
+            if (!placement.has(myRank)) 
+                placement.set(myRank, new Set());
+    
+            placement.get(myRank).add(key);
+        }
     }
 
     return placement;
@@ -78,10 +81,30 @@ function generateRankPlacement(graph) {
  * on keys of nodes from the graph.
  * @param {Graph} graph Graph data object
  */
-const buildSortFn = (graph) => (aKey, bKey) => {
-    // More edges pushes the node further to the right
-    // (i.e. further down the sort)
-    return edgeCount(graph, aKey) - edgeCount(graph, bKey);
+const buildSortFn = (graph) => {
+
+    let sinkKeys = Array.from(graph.sinks()).map(([key]) => key);
+    let sinks = new Set(sinkKeys);
+    // let sourceKeys = Array.from(graph.sources()).map(([key]) => key);
+    // let sources = new Set(sourceKeys);
+
+    // console.log("sources", sources);
+    // console.log("sinks", sinks);
+    // debugger;
+
+    return (aKey, bKey) => {
+        // More edges pushes the node further to the right
+        // (i.e. further down the sort)
+
+        if (sinks.has(aKey)) {
+            return -1;
+        }
+        if (sinks.has(bKey)) {
+            return 1;
+        }
+
+        return edgeCount(graph, aKey) - edgeCount(graph, bKey);
+    }
 }
 
 

@@ -11,7 +11,7 @@
         fill: none;
     }
     
-    .nodes * {
+    .nodes circle {
         cursor: pointer;
         stroke-width: 6px;
         stroke: $unselected-color;
@@ -22,10 +22,10 @@
         }
         
         &.dataset {
+            // fill: $dataset-color;
             fill: white;
             &:hover {
                 stroke: $dataset-color;
-                opacity: 1.0;
             }
             &.selected {
                 fill: $dataset-color;

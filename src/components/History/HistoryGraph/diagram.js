@@ -39,8 +39,12 @@ const drawNodes = (svg, graph, vm) => {
         .append("circle")
         .attr("r", d => d.type == "job" ? 12 : 16)
         .attr("class", d => d.type)
-        .on("mouseover", d => vm.$emit("hoverNode", d))
-        .on("mouseout", d => vm.$emit("hoverNode", null))
+        .on("mouseover", d => {
+            vm.$emit("hoverNode", d.id);
+        })
+        .on("mouseout", () => {
+            vm.$emit("hoverNode", null);
+        })
         .on("click", function (d) {
             // TODO: make this less specific
             if (d.type == "dataset") {

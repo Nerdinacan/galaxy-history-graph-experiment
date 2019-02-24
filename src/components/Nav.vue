@@ -17,9 +17,10 @@ header {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
+    widows: auto;
     height: auto;
     z-index: 10;
+    /* border: 1px solid red; */
 
     nav ul {
         

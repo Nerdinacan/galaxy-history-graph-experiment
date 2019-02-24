@@ -30,7 +30,8 @@
 
         <hover-selection 
             v-if="hoverSelection" 
-            :item="hoverSelection" />
+            :graph="historyGraph"
+            :itemKey="hoverSelection" />
 
         <!-- job node toggle -->
         <div class="jobToggle">
@@ -94,10 +95,12 @@ export default {
         },
       
         hoverDataset() {
-            if (this.hoverSelection instanceof DatasetNode) {
-                let ds = this.getDatasetById(this.hoverSelection.id);
-                if (!this.selection.has(ds.id)) {
-                    return ds;
+            if (this.hoverSelection) {
+                let ds = this.getDatasetById(this.hoverSelection);
+                if (ds) {
+                    if (!this.selection.has(ds.id)) {
+                        return ds;
+                    }
                 }
             }
             return null;
