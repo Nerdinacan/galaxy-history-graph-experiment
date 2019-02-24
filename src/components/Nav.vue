@@ -3,9 +3,7 @@
         <nav>
             <ul>
                 <li><a href="/#/history/0">Small</a></li>
-                <li><a href="/#/history/0/1">Small (no jobs)</a></li>
                 <li><a href="/#/history/1">Medium</a></li>
-                <li><a href="/#/history/1/1">Medium (no jobs)</a></li>
             </ul>
         </nav>
     </header>

@@ -32,6 +32,11 @@
             v-if="hoverSelection" 
             :item="hoverSelection" />
 
+        <!-- job node toggle -->
+        <div class="jobToggle">
+            <input type="checkbox" v-model="showJobs" /> Jobs
+        </div>
+
     </div>
 </template>
 
@@ -44,7 +49,6 @@ import HistoryGraph from "./HistoryGraph/Graph";
 import HistoryEditor from "./HistoryEditor";
 import HoverSelection from "./HoverSelection";
 
-import { loadHistoryById, saveNewJob } from "./service";
 import { DatasetNode, generateGraph, generateJoblessGraph } 
     from "./HistoryGraph/generateGraph";
 
@@ -62,20 +66,26 @@ export default {
     },
 
     props: {
-        jobless: { type: Boolean, required: false, default: false },
-        id: { type: String, required: true }
+        // showJobs: { type: Boolean, required: false, default: true },
+        // id: { type: String, required: true }
+        value: { type: Object, required: true }
     },
 
     data() {
         return {
+            showJobs: true,
             selection: new Set(),
-            history: null,
+            // history: null,
             hoverSelection: null,
             graphCenter: null
         }
     },
 
     computed: {
+
+        history() {
+            return this.value;
+        },
 
         selectedDatasets() {
             let ids = Array.from(this.selection);
@@ -95,38 +105,26 @@ export default {
 
         // full data graph
         historyGraph() {
-            let g = generateGraph(this.history);
-            if (this.jobless) {
-                let jobless = generateJoblessGraph(g); 
-                return jobless;
+            let graph = generateGraph(this.history);
+            if (!this.showJobs) {
+                graph = generateJoblessGraph(graph);
             }
-            return g;
+            return graph;
         }
         
     },
 
     watch: {
-        
         history(newHistory, oldHistory) {
             this.$nextTick(() => {
                 let newDsIds = newHistory.datasets.map(ds => ds.id);
                 let intersection = setIntersect(newDsIds, this.selection);
                 this.selection = intersection;
             })
-        },
-        id(newHistoryId) {
-            this.loadHistory(newHistoryId);
         }
     },
 
     methods: {
-        loadHistory(id) {
-            loadHistoryById(parseInt(id))
-                .then(h => {
-                    let newHistory = Object.assign({}, h);
-                    this.history = newHistory;
-                });
-        },
         getDatasetById(id) {
             if (this.history) {
                 let datasets = this.history.datasets;
@@ -147,7 +145,6 @@ export default {
         onHoverNode(o) {
             this.hoverSelection = o;
         },
-
         onEditorResize(container) {
             console.log("editor resized", arguments);
             // let container = this.$refs.container;
@@ -157,20 +154,10 @@ export default {
             //     y: editor.clientHeight / 2
             // }
         },
-
-        onCreateJob({ tool, toolParams }) {
-
-            saveNewJob(this.selectedDatasets, tool, toolParams)
-                .then(({ newDataset, newJob }) => {
-                    // create and set new history                
-                    let h = Object.assign({}, this.history);
-                    h.datasets = [ ...h.datasets, newDataset ];
-                    h.jobs = [ ...h.jobs, newJob ];
-                    this.history = h;
-                })
-                .catch(err => {
-                    console.warn("save job all messed-up", err);
-                });
+        onCreateJob(payload) {
+            this.$emit("runJob", Object.assign({}, payload, {
+                selection: this.selection
+            }));
         },
 
         // reCenterGraph() {
@@ -181,14 +168,20 @@ export default {
         //         y: editor.clientHeight / 2
         //     }
         // }
-    },
-
-    mounted() {
-        this.loadHistory(this.id);
     }
-    
 }
 
 </script>
 
 <style src="./styles/index.scss" lang="scss"></style>
+
+<style>
+
+.jobToggle {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    z-index: 20;
+}
+
+</style>

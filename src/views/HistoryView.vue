@@ -1,0 +1,57 @@
+<template>
+    <history v-if="history" v-model="history" @runJob="runJob" />
+</template>
+
+<script>
+
+import History from "@/components/History/History";
+import { loadHistoryById } from "@/components/History/service";
+
+export default {
+    components: {
+        History
+    },
+    data() {
+        return {
+            history: null
+        }
+    },
+    methods: {
+        setHistory(history) {
+            this.history = history;
+        },
+        runJob({ tool, toolParams, selection }) {
+            console.log("runJob", this.history, tool, toolParams, selection);
+
+            // saveNewJob(this.selectedDatasets, tool, toolParams)
+            //     .then(({ newDataset, newJob }) => {
+            //         // create and set new history                
+            //         let h = Object.assign({}, this.history);
+            //         h.datasets = [ ...h.datasets, newDataset ];
+            //         h.jobs = [ ...h.jobs, newJob ];
+
+                    
+
+            //         // this.history = h;
+            //     })
+            //     .catch(err => {
+            //         console.warn("save job all messed-up", err);
+            //     });
+        }
+    },
+    beforeRouteEnter(to, from, next) {
+        loadHistoryById(to.params.id)
+            .then(h => {
+                next(vm => vm.setHistory(h));
+            });
+    },
+    beforeRouteUpdate(to, from, next) {
+        loadHistoryById(to.params.id)
+            .then(h => {
+                this.setHistory(h);
+                next();
+            });
+    }
+}
+
+</script>

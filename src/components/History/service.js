@@ -3,8 +3,9 @@ import { createDataset, createJob } from "./model";
 import uuidv4 from "uuid/v4";
 
 export async function loadHistoryById(id) {
-    let history = histories.get(id);
-    history.id = id;
+    let intId = parseInt(id);
+    let history = histories.get(intId);
+    history.id = intId;
     return history;
 }
 
