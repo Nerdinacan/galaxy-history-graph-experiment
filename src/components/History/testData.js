@@ -1,3 +1,4 @@
+import uuidv4 from "uuid/v4";
 import { createDataset, createJob, createTool } from "./model";
 
 
@@ -61,11 +62,89 @@ export const bigJobs = buildJobData(bigDatasets, [
 // 2 histories
 
 export const histories = new Map();
-histories.set(0, { datasets: littleDatasets, jobs: littleJobs });
-histories.set(1, { datasets: bigDatasets, jobs: bigJobs });
+histories.set(0, { id: 0, datasets: littleDatasets, jobs: littleJobs });
+histories.set(1, { id: 1, datasets: bigDatasets, jobs: bigJobs });
 
 
 
 // Big list of Fake tools
 
 export const tools = Array(400).fill(0).map(createTool);
+
+
+
+/**
+ * Build a random history with provided dataset count
+ * @param {integer} datasetCount 
+ */
+export async function loadRandomHistory(jobCount) {
+
+    // makes fake inputs/outputs from that dataset
+    let jobMap = buildRandomJobMap(parseInt(jobCount));
+
+    // get set of all datasetIDs from jobMap
+    let ids = new Set();
+    jobMap.forEach(m => {
+        m.inputs.forEach(id => ids.add(id));
+        m.outputs.forEach(id => ids.add(id));
+    });
+
+    // make datasets
+    let datasets = Array.from(ids).map(id => createDataset({ id: `dataset-${id}` }));
+
+    // makes jobs out of the parts
+    let jobs = jobMap
+        .map(jd => {
+            return {
+                inputs: jd.inputs.map(id => `dataset-${id}`),
+                outputs: jd.outputs.map(id => `dataset-${id}`)
+            }
+        })
+        .map((props, i) => createJob({ ...props, id: `job-${i}` }));
+
+    // Ta-daaa a history
+    return { id: uuidv4(), datasets, jobs };
+}
+
+
+function buildRandomJobMap(jobCount) {
+
+    // keep moving forward;
+    let lastDS = 0
+
+    let jobMap = Array(jobCount).fill(0).map((job, jobnum) => {
+
+        // pick 1-4 random datasets
+        let inputCount = randomNum(1,4);
+        let inputArray = Array(inputCount).fill(0).map((arr, i) => {
+            let val = randomNum(0, lastDS + inputCount);
+            lastDS = Math.max(lastDS, val);
+            return val;
+            // return `dataset-${val}`;
+        });
+        let inputSet = new Set(inputArray);
+
+
+        // 0-4 outputs
+        let outputCount = randomNum(1,3);
+        let outputArray = Array(outputCount).fill(0).map((arr, i) => {
+            let val = randomNum(lastDS + inputCount, lastDS + inputCount + outputCount);
+            lastDS = Math.max(lastDS, val);
+            return val;
+            // return `dataset-${val}`;
+        });
+        let outputSet = new Set(outputArray);
+
+        return { 
+            inputs: Array.from(inputSet),
+            outputs: Array.from(outputSet)
+        };
+    });
+
+    return jobMap;
+}
+
+function randomNum(start, end) {
+    let numVals = end - start;
+    return start + Math.floor( Math.random() * 10000 ) % numVals;
+}

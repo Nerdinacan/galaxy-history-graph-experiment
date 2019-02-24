@@ -11,6 +11,11 @@ const routes = [
         path: '/', 
         component: Home
     },
+    // { 
+    //     name: 'randomhistory', 
+    //     path: '/history/random/:datasetcount', 
+    //     component: HistoryView
+    // },
     { 
         name: 'history', 
         path: '/history/:id', 

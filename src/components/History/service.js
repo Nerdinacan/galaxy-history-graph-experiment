@@ -3,25 +3,31 @@ import { createDataset, createJob } from "./model";
 import uuidv4 from "uuid/v4";
 
 export async function loadHistoryById(id) {
-    let intId = parseInt(id);
-    let history = histories.get(intId);
-    history.id = intId;
-    return history;
+    return histories.get(parseInt(id));
 }
 
 export async function getTools() {
     return tools;
 }
 
-export async function saveNewJob(datasets, tool, toolParams) {
+/**
+ * Creates a single new dataset from a tool and a set of inputs, 
+ * this is a temp function. In reality several output sets might
+ * be generated.
+ * 
+ * @param {Set} inputs  Set of input dataset ids
+ * @param {*} tool Tool description
+ * @param {*} toolParams Paraeters for the tool
+ */
+export async function executeJob(inputs, tool, toolParams) {
 
-    console.log("saveNewJob", datasets, tool, toolParams);
-
+    console.log("executeJob", inputs, tool, toolParams);
+    
     if (!tool) {
         throw new Error("missing tool");
     }
-    if (!datasets.size) {
-        throw new Error("no selected datasets");
+    if (!inputs.size) {
+        throw new Error("no selected inputs");
     }  
 
     // Gin up a new result set
@@ -29,9 +35,10 @@ export async function saveNewJob(datasets, tool, toolParams) {
 
     let newJob = createJob({
         id: uuidv4(),
-        inputs: Array.from(datasets.values()).map(ds => ds.id),
+        inputs: Array.from(inputs),
         outputs: [ newDataset.id ],
     });
 
     return { newJob, newDataset };
 }
+
