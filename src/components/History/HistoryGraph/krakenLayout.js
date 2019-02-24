@@ -9,6 +9,8 @@ const hSpacing = 80, vSpacing = 80;
 
 export const krakenLayout = (graph) => {
 
+    console.log("kracken running");
+
     // column sorter
     let columnSortFn = buildSortFn(graph);
 

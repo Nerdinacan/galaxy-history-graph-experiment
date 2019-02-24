@@ -81,12 +81,13 @@ export default {
     watch: {
         
         graph(newGraph) {
+            console.log("heard graph change")
             this.updateFn(newGraph);
         },
 
         // mutate graph instead of redrawing whole thing
         selection(newSelection) {
-            // console.log("selection changed", newSelection);
+            console.log("selection changed", newSelection);
             for(let [key, node] of this.graph)
                 node.selected = newSelection.has(key);
             this.updateFn(this.graph);

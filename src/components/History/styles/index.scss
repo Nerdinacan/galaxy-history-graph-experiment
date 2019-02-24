@@ -126,9 +126,16 @@ main {
         z-index: 0;
         .history-graph {
             @include fill();
-            flex: 1;
+            flex: 3;
             position: relative;
             overflow: auto;
+            &:first-child {
+                background: rgba(0,0,0,0.05);
+            }
+            &:last-child {
+                flex: 7;
+                border-left: 1px dotted grey;
+            }
         }
     }
 

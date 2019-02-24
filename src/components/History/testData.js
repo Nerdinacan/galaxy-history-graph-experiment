@@ -49,11 +49,22 @@ export const bigJobs = buildJobData(bigDatasets, [
 ]);
 
 
+// Very small
+export const verySmall = buildDatasets(3);
+
+export const verSmallJobs = buildJobData(verySmall, [
+    { inputs: [0], outputs: [1] },
+    { inputs: [0,1], outputs: [2] }
+]);
+
+
 // 2 histories
 
 export const histories = new Map();
 histories.set(0, { id: 0, datasets: littleDatasets, jobs: littleJobs });
 histories.set(1, { id: 1, datasets: bigDatasets, jobs: bigJobs });
+histories.set(2, { id: 2, datasets: buildDatasets(1), jobs: [] });
+histories.set(3, { id: 3, datasets: verySmall, jobs: verSmallJobs });
 
 
 

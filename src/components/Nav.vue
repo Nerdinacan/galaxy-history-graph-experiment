@@ -4,6 +4,8 @@
             <ul>
                 <li><a href="/#/history/0">Small</a></li>
                 <li><a href="/#/history/1">Medium</a></li>
+                <li><a href="/#/history/2">One Dot</a></li>
+                <li><a href="/#/history/3">Very Small</a></li>
                 <!-- <li><a href="/#/history/random/100">Random graph</a></li> -->
             </ul>
         </nav>
