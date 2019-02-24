@@ -93,18 +93,16 @@ const buildSortFn = (graph) => {
     // console.log("sources", sources);
     // console.log("sinks", sinks);
     // debugger;
-
+    
+    // More edges pushes the node further to the right
+    // (i.e. further down the sort)
     return (aKey, bKey) => {
-        // More edges pushes the node further to the right
-        // (i.e. further down the sort)
-
-        if (sinks.has(aKey)) {
-            return -1;
-        }
-        if (sinks.has(bKey)) {
-            return 1;
-        }
-
+        // if (sinks.has(aKey)) {
+        //     return -1;
+        // }
+        // if (sinks.has(bKey)) {
+        //     return 1;
+        // }
         return edgeCount(graph, aKey) - edgeCount(graph, bKey);
     }
 }

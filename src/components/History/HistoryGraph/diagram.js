@@ -69,35 +69,46 @@ const drawLinks = (svg, graph) => {
     });
 
     let u = svg.select(".links")
-        // .selectAll("path")
-        .selectAll("line")
+        .selectAll("path")
+        // .selectAll("line")
         .data(links, d => `${d.source.id}_${d.target.id}`);
 
     let e = u.enter()
-        // .append("path")
-        .append("line")
+        .append("path")
+        // .append("line")
         .attr("class", "link")
 
     u.exit().remove();
 
     e.merge(u)
-        // .attr("d", buldArc);
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+        .attr("d", buldArc);
+        // .attr("x1", d => d.source.x)
+        // .attr("y1", d => d.source.y)
+        // .attr("x2", d => d.target.x)
+        // .attr("y2", d => d.target.y);
 }
 
 function buldArc(d) {
-    var dx = d.target.x - d.source.x,
-        dy = d.target.y - d.source.y,
-        dr = Math.sqrt(dx * dx + dy * dy);
+    
+    
+    let dir = d.source.type == "dataset" ? 1 : -1;
+    console.log("d", d.source.type);
+
+    let s = d.source, t = d.target;
+    if (d.source.type == "job") {
+        s = d.target, t = d.source; 
+    }
+
+    var dx = t.x - s.x,
+        dy = t.y - s.y,
+        dr = dir * Math.sqrt(dx * dx + dy * dy);
+
     return "M" +
-        d.source.x + "," +
-        d.source.y + "A" +
+        s.x + "," +
+        s.y + "A" +
         dr + "," + dr + " 0 0,1 " +
-        d.target.x + "," +
-        d.target.y;
+        t.x + "," +
+        t.y;
 }
 
 
