@@ -81,18 +81,32 @@ const drawLinks = (svg, graph) => {
     u.exit().remove();
 
     e.merge(u)
-        .attr("d", buldArc);
+        .attr("d", buildPath);
         // .attr("x1", d => d.source.x)
         // .attr("y1", d => d.source.y)
         // .attr("x2", d => d.target.x)
         // .attr("y2", d => d.target.y);
 }
 
-function buldArc(d) {
+function buildPath(d) {
     
-    
-    let dir = d.source.type == "dataset" ? 1 : -1;
     console.log("d", d.source.type);
+    console.log("d.source.rank", d.source.rank);
+    console.log("d.target.rank", d.target.rank);
+
+    if (Math.abs(d.source.rank - d.target.rank) == 1) {
+        // draw straight line
+        return drawLine(d);
+    } else {
+        return drawArc(d);
+    }
+
+}
+
+
+function drawLine(d) {
+
+    let dir = d.source.type == "dataset" ? 1 : -1;
 
     let s = d.source, t = d.target;
     if (d.source.type == "job") {
@@ -103,14 +117,27 @@ function buldArc(d) {
         dy = t.y - s.y,
         dr = dir * Math.sqrt(dx * dx + dy * dy);
 
-    return "M" +
-        s.x + "," +
-        s.y + "A" +
-        dr + "," + dr + " 0 0,1 " +
-        t.x + "," +
-        t.y;
+    return `M ${s.x},${s.y} L${t.x},${t.y}`;
+
 }
 
+function drawArc(d) {
+
+    let dir = d.source.type == "dataset" ? 1 : -1;
+
+    let s = d.source, t = d.target;
+    if (d.source.type == "job") {
+        s = d.target, t = d.source; 
+    }
+
+    var dx = t.x - s.x,
+        dy = t.y - s.y,
+        dr = dir * Math.sqrt(dx * dx + dy * dy);
+
+    return `M ${s.x},${s.y} A${dr},${dr} 0,0,1 ${t.x},${t.y}`;
+
+
+}
 
 
 
