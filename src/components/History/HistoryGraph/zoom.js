@@ -21,6 +21,23 @@ export default {
 }
 
 
+// const statefulDirective = (() => {
+// 	const state = new WeakMap()
+// 	return {
+// 		bind(el) {
+// 			const data = {}
+// 			state.set(el, data)
+// 		},
+// 		update(el) {
+// 			const data = state.get(el)
+// 		},
+// 		unbind(el) {
+// 			state.delete(el)
+// 		}
+// 	}
+// })()
+
+
 /*
 // Zoom diagram programatically to indicated point
 // https://www.datamake.io/blog/d3-zoom#prog-zoom

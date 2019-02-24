@@ -3,21 +3,18 @@
 
         <!-- main graphs -->
         <div class="history-graph-container">
-
             <history-graph 
                 :graph="historyGraph"
                 :selection="selection" 
                 :graphCenter="graphCenter"
                 @selectDataset="onSelectDataset"
                 @hoverNode="onHoverNode" />
-
             <history-graph 
                 :graph="historyGraph"
                 :selection="selection" 
                 :graphCenter="graphCenter"
                 @selectDataset="onSelectDataset"
                 @hoverNode="onHoverNode" />
-
         </div>
 
         <history-editor ref="editor" 

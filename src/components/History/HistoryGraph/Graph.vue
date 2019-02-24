@@ -1,5 +1,5 @@
 <template>
-    <section class="history-graph" ref="container" v-resize:debounce.initial="onResize">
+    <section class="history-graph" ref="container" v-resize.initial="onResize">
         <svg ref="svg" :height="height" :width="width" v-zoom="'.zoomContainer'">
             <g class="zoomContainer">
                 <g class="links"></g>
@@ -68,8 +68,12 @@ export default {
 
     methods: {
 
-        onResize() {
-            Object.assign(this, this.graphSize);
+        onResize(el) {
+            // console.log("onResize", this.graphSize);
+            // Object.assign(this, this.graphSize);
+            // console.log(el.clientWidth, el.clientHeight);
+            this.width = parseInt(el.clientWidth);
+            this.height = parseInt(el.clientHeight);
         }
 
     },

@@ -125,10 +125,10 @@ main {
         display: flex;
         z-index: 0;
         .history-graph {
+            @include fill();
             flex: 1;
-            svg {
-                @fill();
-            }
+            position: relative;
+            overflow: auto;
         }
     }
 
