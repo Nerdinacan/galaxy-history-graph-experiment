@@ -9,16 +9,16 @@
             @clickTool="onToolClick">
             
             <ul>
-                <li v-if="hasTool">
+                <li v-if="hasTool" :class="{ ready: canCreate }">
                     <a @click.prevent="$emit('createJob', { tool, toolParams })">
                         Create Job
                     </a>
                 </li>
-                <li v-if="hasSelection">
+                <!-- <li v-if="hasSelection">
                     <a @click.prevent="onGroup">
                         Group Selected Nodes
                     </a>
-                </li>
+                </li> -->
             </ul>
 
         </dataset-selection>
@@ -28,9 +28,9 @@
             :selectedDatasets="selectedDatasets" 
             @toolSelected="onToolSelected" />
 
-        <tool-parameters 
+        <!-- <tool-parameters 
             :tool="tool"
-            @paramsValid="onParamsValid" />
+            @paramsValid="onParamsValid" /> -->
 
     </div>
 </template>
@@ -85,6 +85,10 @@ export default {
                 "tool-list": this.hasSelection && !this.hasTool,
                 "tool-parameters": this.hasSelection && this.hasTool
             }
+        },
+
+        canCreate() {
+            return this.hasSelection && this.hasTool;
         }
     },
 

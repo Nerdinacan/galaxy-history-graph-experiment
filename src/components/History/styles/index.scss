@@ -175,8 +175,14 @@ main {
     }
 
     // stand alone buttons
-    a.button {
+    .button {
         @include boringSquareButton();
         @include buttonDataTypes();
+    }
+
+    .ready a,
+    .button.ready {
+        background-color: $ready-color;
+        border-color: $ready-color;
     }
 }
