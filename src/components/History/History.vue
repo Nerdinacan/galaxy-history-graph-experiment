@@ -10,7 +10,7 @@
                 @clickNode="onGraphNodeClick"
                 @hoverNode="onHoverNode" />
             <history-graph 
-                :graph="entireHistory"
+                :graph="historyFocusedOnSelection"
                 :selection="selection" 
                 :graphCenter="graphCenter"
                 @clickNode="onGraphNodeClick"
@@ -120,7 +120,7 @@ export default {
         // history graph focused around the hoverselection
         historyFocusedOnSelection() {
             // return this.entireHistory;
-            return focusedGraph(this.fullGraph, this.hoverSelection, 2);
+            return focusedGraph(this.entireHistory, this.hoverSelection, 2);
         }
         
     },

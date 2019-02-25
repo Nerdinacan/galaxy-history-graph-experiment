@@ -80,8 +80,11 @@ export default {
         onResize(el) {
             this.width = parseInt(el.clientWidth);
             this.height = parseInt(el.clientHeight);
-
-            // shuffle entire graph to middle
+            this.centerDiagram();
+        },
+        
+        // shuffle entire graph to middle
+        centerDiagram() {
             let offsetContainer = this.$refs.offsetContainer;
             if (offsetContainer) {
                 let translate = `translate(${this.width/2}, 200)`;
