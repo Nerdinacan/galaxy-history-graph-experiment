@@ -41,7 +41,7 @@
 <script>
 
 import resize from 'vue-resize-directive';
-import { setIntersect } from "@/setUtilities.js";
+import { setIntersect } from "@/utilities/setUtilities.js";
 
 import HistoryGraph from "./HistoryGraph/Graph";
 import HistoryEditor from "./HistoryEditor";

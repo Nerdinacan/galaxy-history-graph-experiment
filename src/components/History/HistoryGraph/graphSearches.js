@@ -7,15 +7,7 @@
  */
 
 import Graph from "graph.js";
-
-
-// Utility combines iterators
-let concatIterators = function*(...args) {
-    for (let iterator of args)
-        for (let x of iterator)
-            yield x;
-}
-
+import { concatIterators } from "@/utilities/iteratorUtils";
 
 
 /**

@@ -98,6 +98,10 @@ div.history
 
 // Layout
 
+body {
+    margin: 0;
+}
+
 main {
     height: 100vh;
 }
@@ -121,14 +125,18 @@ main {
     }
 
     .history-graph-container {
+        
         @include fill();
         display: flex;
         z-index: 0;
+        overflow: hidden;
+
         .history-graph {
             @include fill();
             flex: 3;
             position: relative;
-            overflow: auto;
+            overflow: hidden;
+
             &:first-child {
                 background: rgba(0,0,0,0.05);
             }
