@@ -3,38 +3,41 @@
 
         <!-- main graphs -->
         <div class="history-graph-container">
-            
-            <history-graph 
-                :graph="entireHistory"
-                :selection="selection" 
-                :graphCenter="graphCenter"
-                :buildDiagram="buildForceDiagram"
-                @clickNode="onGraphNodeClick" />
-
+        
             <history-graph 
                 :graph="entireHistory"
                 :selection="selection" 
                 :graphCenter="graphCenter"
                 :buildDiagram="buildKrakenDiagram"
                 @clickNode="onGraphNodeClick"
-                @hoverNode="onHoverNode">
-                <job-toggle v-model="showJobs" />
+                @hoverNode="doHoverSelect">
+
+                <hover-selection 
+                    v-if="hoverSelection" 
+                    :graph="fullGraph"
+                    :itemKey="hoverSelection" />
+
             </history-graph>
            
+            <history-graph 
+                :graph="historyFocusedOnSelection"
+                :selection="selection" 
+                :graphCenter="graphCenter"
+                :buildDiagram="buildForceDiagram"
+                @clickNode="doHoverSelect">
+                <job-toggle v-model="showJobs" />
+            </history-graph>
+
         </div>
 
-        <history-editor ref="editor" 
+        <!-- <history-editor ref="editor" 
             v-resize:debounce.initial="onEditorResize"
             :history="history" 
             :selectedDatasets="selectedDatasets"
             :hoverDataset="hoverDataset"
             @unselectDataset="onUnselectDataset"
-            @createJob="onCreateJob" />
+            @createJob="onCreateJob" /> -->
 
-        <hover-selection 
-            v-if="hoverSelection" 
-            :graph="fullGraph"
-            :itemKey="hoverSelection" />
     </div>
 </template>
 
@@ -68,8 +71,6 @@ export default {
     },
 
     props: {
-        // showJobs: { type: Boolean, required: false, default: true },
-        // id: { type: String, required: true }
         value: { type: Object, required: true }
     },
 
@@ -125,7 +126,7 @@ export default {
 
         // history graph focused around the hoverselection
         historyFocusedOnSelection() {
-            return focusedGraph(this.entireHistory, this.hoverSelection, 2);
+            return focusedGraph(this.entireHistory, this.hoverSelection, 1);
         }
         
     },
@@ -161,7 +162,7 @@ export default {
             s.delete(id)
             this.selection = s;
         },
-        onHoverNode(o) {
+        doHoverSelect(o) {
             // keeps existing hover even on mouse-out
             if (o) {
                 this.hoverSelection = o;

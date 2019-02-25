@@ -2,19 +2,28 @@
 
 .history-graph svg {
 
-    .links * {
+    .edges line,
+    .edges path {
         stroke: $link-color;
         stroke-width: 3px;
+        &.placeholder {
+            stroke-dasharray: 2px 2px;
+        }
     }
 
-    .links path {
-        fill: none;
+    .edges path {
+        fill: transparent;
     }
     
     .nodes circle {
         cursor: pointer;
         stroke-width: 4px;
         stroke: $unselected-color;
+
+        &.placeholder {
+            fill: transparent;
+            stroke: transparent;
+        }
 
         &.job {
             fill: white;
@@ -23,6 +32,11 @@
             &:hover {
                 fill: $job-color;
                 stroke: $job-color;
+            }
+            &.hoverselect {
+                fill: $job-color;
+                stroke: $job-color;
+                stroke-width: 12px;
             }
         }
         
@@ -34,17 +48,16 @@
             }
             &.selected {
                 fill: $dataset-color;
-                stroke:$dataset-color;
+                stroke: $dataset-color;
             }
-           
+            &.hoverselect {
+                fill: $dataset-color;
+                stroke: $dataset-color;
+                stroke-width: 12px;
+            }
         }
 
-        &.hoverselect {
-            // stroke: black !important;
-            stroke-width: 12px;
-            // stroke: white;
-            // filter: url(#filter-hoverselect);
-        }
+        
     }
 
 }    

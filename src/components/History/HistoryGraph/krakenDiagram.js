@@ -10,7 +10,7 @@ import { krakenLayout } from "./krakenLayout";
 // Build a function that can be called when the graph
 // changes to update the positions of the nodes
 
-export const buildKrakenDiagram = (svgEl, layoutFn, vm) => {
+export const buildKrakenDiagram = (svgEl, vm) => {
 
     // console.log("buildKrakenDiagram");
 
@@ -34,7 +34,7 @@ const drawNodes = (svg, graph, vm) => {
     // console.log("nodes", nodes);
 
     // updates
-    let u = svg.select(".nodes")
+    let u = svg.select("g.nodes")
         .selectAll("circle")
         .data(nodes, d => d.id);
 
@@ -69,22 +69,20 @@ const drawLinks = (svg, graph) => {
 
     let links = Array.from(graph.edges()).map(([sourceKey, targetKey]) => {
         return {
-            source: graph.vertexValue(sourceKey),
-            target: graph.vertexValue(targetKey)
+            sourceObj: graph.vertexValue(sourceKey),
+            targetObj: graph.vertexValue(targetKey)
         }
     });
 
     // console.log("links", links);
-
-    let u = svg.select(".links")
-        .selectAll("path")
+    let u = svg.select("g.edges").selectAll("path")
         // .selectAll("line")
-        .data(links, d => `${d.source.id}_${d.target.id}`);
+        .data(links, d => `${d.sourceObj.id}_${d.targetObj.id}`);
 
     let e = u.enter()
         .append("path")
         // .append("line")
-        .attr("class", "link")
+        .attr("class", "edge")
 
     u.exit().remove();
 
@@ -102,7 +100,7 @@ function buildPath(d) {
     // console.log("d.source.rank", d.source.rank);
     // console.log("d.target.rank", d.target.rank);
 
-    if (Math.abs(d.source.rank - d.target.rank) == 1) {
+    if (Math.abs(d.sourceObj.rank - d.targetObj.rank) == 1) {
         // draw straight line
         return drawLine(d);
     } else {
@@ -114,11 +112,11 @@ function buildPath(d) {
 
 function drawLine(d) {
 
-    let dir = d.source.type == "dataset" ? 1 : -1;
+    let dir = d.sourceObj.type == "dataset" ? 1 : -1;
 
-    let s = d.source, t = d.target;
-    if (d.source.type == "job") {
-        s = d.target, t = d.source; 
+    let s = d.sourceObj, t = d.targetObj;
+    if (d.sourceObj.type == "job") {
+        s = d.targetObj, t = d.sourceObj; 
     }
 
     var dx = t.x - s.x,
@@ -131,11 +129,11 @@ function drawLine(d) {
 
 function drawArc(d) {
 
-    let dir = d.source.type == "dataset" ? 1 : -1;
+    let dir = d.sourceObj.type == "dataset" ? 1 : -1;
 
-    let s = d.source, t = d.target;
-    if (d.source.type == "job") {
-        s = d.target, t = d.source; 
+    let s = d.sourceObj, t = d.targetObj;
+    if (d.sourceObj.type == "job") {
+        s = d.targetObj, t = d.sourceObj; 
     }
 
     var dx = t.x - s.x,

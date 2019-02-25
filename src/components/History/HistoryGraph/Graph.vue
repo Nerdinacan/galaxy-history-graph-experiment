@@ -4,7 +4,7 @@
             v-zoom="'.zoomContainer'">
             <g ref="offsetContainer">
                 <g class="zoomContainer">
-                    <g class="links"></g>
+                    <g class="edges"></g>
                     <g class="nodes"></g>
                 </g>
             </g>
@@ -70,7 +70,7 @@ export default {
         },
 
         updateFn() {
-            let fn = this.buildDiagram(this.$refs.svg, this.layout, this);
+            let fn = this.buildDiagram(this.$refs.svg, this);
             return (graph) => this.$nextTick(() => fn(graph));
         }
 

@@ -30,10 +30,10 @@ export function radiusSearch(graph, startKey, maxRadius = 1) {
     function *visit(key, radius) {
 
         visited.add(key);
-        
+
         yield { key, radius, node: graph.vertexValue(key) };
 
-        if (radius <= maxRadius) {
+        if (radius < maxRadius) {
             let connex = concatIterators(
                 graph.verticesFrom(key), 
                 graph.verticesTo(key)

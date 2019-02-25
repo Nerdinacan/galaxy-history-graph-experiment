@@ -1,6 +1,6 @@
 import Graph from "graph.js";
 import { dfs, radiusSearch } from "./graphSearches";
-``
+// import { Dataset } from "../model";
 
 export function DatasetNode(props) {
     this.selected = false;
@@ -36,28 +36,6 @@ export function generateGraph({ datasets, jobs }) {
 }
 
 
-// Format graph data the way d3 force simulation wants to consume it
-
-export function graphToD3Inputs(graph) {
-
-    let vertices = Array.from(graph);
-
-    let nodes = vertices.map(([id, data]) => data);
-    
-    let edges = Array.from(graph.edges());
-
-    let links = edges.map(([sourceId, targetId]) => {
-        return { 
-            source: nodes.findIndex(n => n.id == sourceId),
-            target: nodes.findIndex(n => n.id == targetId)
-        };
-    });
-
-    return { nodes, links };
-}
-
-
-
 // Create a new graph out of the input but remove all the job
 // nodes and replace them with corresponding edges between 
 // surrounding datasets
@@ -69,7 +47,7 @@ export function generateJoblessGraph(fullGraph) {
     // add all the dataset nodes to the graph
     for (let [key, node] of fullGraph) {
         if (node.type == "dataset") {
-            g.addVertex(key, node);
+            g.addVertex(key, new DatasetNode(node));
         }
     }
 
@@ -88,87 +66,119 @@ export function generateJoblessGraph(fullGraph) {
 }
 
 
+// Format graph data the way d3 force simulation wants to consume it
+
+export function graphToD3Inputs(graph) {
+
+    let vertices = Array.from(graph.clone());
+
+    let nodes = vertices.map(([id, data]) => data);
+    
+    let edges = Array.from(graph.edges());
+
+    let links = edges.map(([sourceId, targetId]) => {
+        // console.log("calculated source index", nodes.findIndex(n => n.id == sourceId));
+        // console.log("calculated target index", nodes.findIndex(n => n.id == targetId));
+        return { 
+            id: `${sourceId}--${targetId}`,
+            sourceId,
+            targetId,
+            source: nodes.findIndex(n => n.id == sourceId),
+            target: nodes.findIndex(n => n.id == targetId)
+        };
+    });
+
+    return { nodes, links };
+}
+
+
+
+
+
 /**
  * Create a sub-graph from a larger input graph that focuses on a 
  * small region and adds "thar be dragons" empty nodes at the source/sinks. 
  * @param {Graph} graph Source data
  */
-export function focusedGraph(input, startNode, radius) {
-    
+export function focusedGraph(input, startNode, maxRadius = 1) {
+
     let g = new Graph();
     if (!startNode) {
         return g;
     }
-    
-    // console.clear();
-    // console.group("focusedGraph startNode", startNode, radius);
-    
-    
-    let ranks = new Map();
 
-    for (let { key, radius, node } of radiusSearch(input, startNode)) {
+    for (let { key, radius, node } of radiusSearch(input, startNode, maxRadius)) {
 
-        // let hopCount = rank - startRank;
-        // console.log(radius, key);
-        if (!ranks.has(radius)) {
-            ranks.set(radius, []);
+        let newNodeProps = Object.assign({}, node, { 
+            radius,
+            focused: key == startNode 
+        });
+
+        let newNode;
+        if (node instanceof JobNode) {
+            newNode = new JobNode(newNodeProps);
         }
-        ranks.get(radius).push(key);
+        if (node instanceof DatasetNode) {
+            newNode = new DatasetNode(newNodeProps);
+        }
 
-        g.addVertex(key, node);
-
+        g.addVertex(key, newNode);
     }
 
     // loop over the collection and add in vertices that connect to
     // other members of the subset
+    let placeholders = [];
     for(let [nodeKey] of g) {
-        // console.group("nodeKey", nodeKey);
 
-        // add in all the incoming edges
-        for (let [vertexKey, vertexValue, edgeValue] of input.verticesTo(nodeKey)) {
-            // console.group(vertexKey);
-            // console.log(vertexValue);
-            // console.log(edgeValue);
-            if (g.hasVertex(vertexKey)) {
-                g.addEdge(vertexKey, nodeKey);
+        // look at all the incoming edges
+        for (let [incomingVertexKey] of input.verticesTo(nodeKey)) {
+            if (g.hasVertex(incomingVertexKey)) {
+                g.addEdge(incomingVertexKey, nodeKey);
             } else {
-                let newVertexIsSource = true;
-                tharBeDragons(g, vertexKey, nodeKey, newVertexIsSource);
+                placeholders.push( tharBeDragons(input, nodeKey, true) );
             }
-            // console.groupEnd();
         }
 
-        for (let [vertexKey, vertexValue, edgeValue] of input.verticesFrom(nodeKey)) {
-            // console.group(vertexKey);
-            // console.log(vertexValue);
-            // console.log(edgeValue);
-            if (g.hasVertex(vertexKey)) {
-                g.addEdge(nodeKey, vertexKey);
+        for (let [outgoingVertexKey] of input.verticesFrom(nodeKey)) {
+            if (g.hasVertex(outgoingVertexKey)) {
+                g.addEdge(nodeKey, outgoingVertexKey);
             } else {
-                let newVertexIsSource = false;
-                tharBeDragons(g, nodeKey, vertexKey, newVertexIsSource);
+                placeholders.push( tharBeDragons(input, nodeKey, false) );
             }
-            // console.groupEnd();
         }
-
-        // console.groupEnd();
     }
 
-    // console.dir(ranks);
-    // console.dir(g);
-    // console.groupEnd();
-
+    // add in the placeholders
+    placeholders.forEach(p => {
+        g.ensureVertex(p.id, p);
+        g.ensureEdge(p.startKey, p.endKey, { placeholder: true });
+    });
 
     return g;
 }
 
-function tharBeDragons(graph, startKey, endKey, newVertexIsSource) {
 
-    console.log("tharBeDragons");
 
-    // let newVertex = newVertexIsSource ? startKey : endKey;
-    // graph.addVertex(newVertex, {});
+function PlaceHolderNode(connectedTo, isIncoming) {
+    this.id = `placeholder-${PlaceHolderNode.counter++}`;
+    this.startKey = isIncoming ? this.id : connectedTo.id;
+    this.endKey = isIncoming ? connectedTo.id : this.id;
+    this.rank = isIncoming ? connectedTo.rank - 1 : connectedTo.rank + 1;
+    this.type = "placeholder";
+}
 
-    // graph.addEdge(startKey, endKey);
+PlaceHolderNode.counter = 0;
+
+
+function tharBeDragons(sourceGraph, connectedKey, isIncoming) {
+    
+    let connectedTo = sourceGraph.vertexValue(connectedKey);
+    
+    console.group("tharBeDragons");
+    let blankSpot = new PlaceHolderNode(connectedTo, isIncoming);
+    console.log(blankSpot);
+    console.groupEnd();
+
+    return blankSpot;
 
 }
