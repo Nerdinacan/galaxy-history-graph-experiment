@@ -37,8 +37,13 @@
                 fill: $dataset-color;
                 stroke:$dataset-color;
             }
+           
         }
-    
+
+        &.hoverselect {
+            // stroke: white;
+            filter: url(#filter-hoverselect);
+        }
     }
 
 }    

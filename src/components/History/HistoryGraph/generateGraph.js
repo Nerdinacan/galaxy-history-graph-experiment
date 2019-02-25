@@ -101,7 +101,7 @@ export function focusedGraph(input, startNode, radius) {
     }
     
     // console.clear();
-    console.group("focusedGraph startNode", startNode, radius);
+    // console.group("focusedGraph startNode", startNode, radius);
     
     
     let ranks = new Map();
@@ -109,7 +109,7 @@ export function focusedGraph(input, startNode, radius) {
     for (let { key, radius, node } of radiusSearch(input, startNode)) {
 
         // let hopCount = rank - startRank;
-        console.log(radius, key);
+        // console.log(radius, key);
         if (!ranks.has(radius)) {
             ranks.set(radius, []);
         }
@@ -122,41 +122,41 @@ export function focusedGraph(input, startNode, radius) {
     // loop over the collection and add in vertices that connect to
     // other members of the subset
     for(let [nodeKey] of g) {
-        console.group("nodeKey", nodeKey);
+        // console.group("nodeKey", nodeKey);
 
         // add in all the incoming edges
         for (let [vertexKey, vertexValue, edgeValue] of input.verticesTo(nodeKey)) {
-            console.group(vertexKey);
-            console.log(vertexValue);
-            console.log(edgeValue);
+            // console.group(vertexKey);
+            // console.log(vertexValue);
+            // console.log(edgeValue);
             if (g.hasVertex(vertexKey)) {
                 g.addEdge(vertexKey, nodeKey);
             } else {
                 let newVertexIsSource = true;
                 tharBeDragons(g, vertexKey, nodeKey, newVertexIsSource);
             }
-            console.groupEnd();
+            // console.groupEnd();
         }
 
         for (let [vertexKey, vertexValue, edgeValue] of input.verticesFrom(nodeKey)) {
-            console.group(vertexKey);
-            console.log(vertexValue);
-            console.log(edgeValue);
+            // console.group(vertexKey);
+            // console.log(vertexValue);
+            // console.log(edgeValue);
             if (g.hasVertex(vertexKey)) {
                 g.addEdge(nodeKey, vertexKey);
             } else {
                 let newVertexIsSource = false;
                 tharBeDragons(g, nodeKey, vertexKey, newVertexIsSource);
             }
-            console.groupEnd();
+            // console.groupEnd();
         }
 
-        console.groupEnd();
+        // console.groupEnd();
     }
 
-    console.dir(ranks);
-    console.dir(g);
-    console.groupEnd();
+    // console.dir(ranks);
+    // console.dir(g);
+    // console.groupEnd();
 
 
     return g;
@@ -164,9 +164,11 @@ export function focusedGraph(input, startNode, radius) {
 
 function tharBeDragons(graph, startKey, endKey, newVertexIsSource) {
 
-    let newVertex = newVertexIsSource ? startKey : endKey;
-    graph.addVertex(newVertex, {});
+    console.log("tharBeDragons");
 
-    graph.addEdge(startKey, endKey);
+    // let newVertex = newVertexIsSource ? startKey : endKey;
+    // graph.addVertex(newVertex, {});
+
+    // graph.addEdge(startKey, endKey);
 
 }

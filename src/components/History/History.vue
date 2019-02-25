@@ -4,16 +4,16 @@
         <!-- main graphs -->
         <div class="history-graph-container">
             <history-graph 
-                :graph="historyFocusedOnSelection"
-                :selection="selection" 
-                :graphCenter="graphCenter"
-                @selectDataset="onSelectDataset"
-                @hoverNode="onHoverNode" />
-            <history-graph 
                 :graph="entireHistory"
                 :selection="selection" 
                 :graphCenter="graphCenter"
-                @selectDataset="onSelectDataset"
+                @clickNode="onGraphNodeClick"
+                @hoverNode="onHoverNode" />
+            <history-graph 
+                :graph="historyFocusedOnSelection"
+                :selection="selection" 
+                :graphCenter="graphCenter"
+                @clickNode="onGraphNodeClick"
                 @hoverNode="onHoverNode" />
         </div>
 
@@ -143,10 +143,13 @@ export default {
             }
             return null;
         },
-        onSelectDataset(id) {
-            let s = new Set(this.selection);
-            s.has(id) ? s.delete(id) : s.add(id);
-            this.selection = s;
+        onGraphNodeClick(nodeData) {
+            if (nodeData instanceof DatasetNode) {
+                let id = nodeData.id;
+                let s = new Set(this.selection);
+                s.has(id) ? s.delete(id) : s.add(id);
+                this.selection = s;
+            }
         },
         onUnselectDataset(id) {
             let s = new Set(this.selection);

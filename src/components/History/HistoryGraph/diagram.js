@@ -14,7 +14,6 @@ export const buildDiagram = (svgEl, vm) => {
 
     // Install one-time setup fixtures
     let svg = select(svgEl);
-    // installZoom(svg);
 
     // Build update function
     return (graph) => {
@@ -26,29 +25,36 @@ export const buildDiagram = (svgEl, vm) => {
 
 const drawNodes = (svg, graph, vm) => {
 
+    console.group("drawNodes");
+
     let nodes = Array.from(graph).map(([k,v]) => v);
+
+    console.log("nodes", nodes);
 
     // updates
     let u = svg.select(".nodes")
         .selectAll("circle")
         .data(nodes, d => d.id);
 
+
     // enters
+
+    let hover = null;
+
     let e = u.enter()
         .append("circle")
         .attr("r", d => d.type == "job" ? 12 : 16)
         .attr("class", d => d.type)
-        .on("mouseover", d => {
+        .on("mouseover", function(d) {
+            if (hover) {
+                hover.classList.remove("hoverselect");
+            }
+            hover = this;
+            this.classList.add("hoverselect");
             vm.$emit("hoverNode", d.id);
         })
-        .on("mouseout", () => {
-            vm.$emit("hoverNode", null);
-        })
         .on("click", function (d) {
-            // TODO: make this less specific
-            if (d.type == "dataset") {
-                vm.$emit("selectDataset", d.id);
-            }
+            vm.$emit("clickNode", d);
         });
 
     u.exit().remove();
@@ -57,6 +63,8 @@ const drawNodes = (svg, graph, vm) => {
         .classed("selected", d => d.selected)
         .attr("cx", d => d.x)
         .attr("cy", d => d.y);
+
+    console.groupEnd();
 }
 
 const drawLinks = (svg, graph) => {
@@ -67,6 +75,8 @@ const drawLinks = (svg, graph) => {
             target: graph.vertexValue(targetKey)
         }
     });
+
+    console.log("links", links);
 
     let u = svg.select(".links")
         .selectAll("path")

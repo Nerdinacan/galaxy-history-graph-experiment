@@ -9,7 +9,8 @@ const hSpacing = 80, vSpacing = 80;
 
 export const krakenLayout = (graph) => {
 
-    // console.log("krakenLayout running");
+
+    console.group("krakenLayout running");
 
     // column sorter
     let columnSortFn = buildSortFn(graph);
@@ -43,6 +44,8 @@ export const krakenLayout = (graph) => {
                 node.y = vSpacing * rank;
             });
     }
+
+    console.groupEnd();
 }
 
 
@@ -51,6 +54,8 @@ export const krakenLayout = (graph) => {
  * can extract rank and column for rendering
  */
 function generateRankPlacement(graph) {
+
+    console.log("generateRankPlacement")
 
     // keep track of locations
     let placement = new Map(/* rank, Set(columns) */);

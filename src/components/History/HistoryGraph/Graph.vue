@@ -5,6 +5,12 @@
                 <g class="links"></g>
                 <g class="nodes"></g>
             </g>
+            <defs>
+                <filter id="filter-hoverselect" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="0" stdDeviation="1" flood-color="white" />
+                    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="rgba(0,0,0,1)" />
+                </filter>
+            </defs>
         </svg>
     </section>
 </template>
@@ -81,15 +87,16 @@ export default {
     watch: {
         
         graph(newGraph) {
-            console.log("heard graph change")
+            console.log("heard graph change, calling updateFn")
             this.updateFn(newGraph);
         },
 
         // mutate graph instead of redrawing whole thing
         selection(newSelection) {
-            console.log("selection changed", newSelection);
+            // console.log("selection changed", newSelection);
             for(let [key, node] of this.graph)
                 node.selected = newSelection.has(key);
+            console.log("selection changed, calling updateFn");
             this.updateFn(this.graph);
         },
 
@@ -102,6 +109,7 @@ export default {
     },
 
     mounted() {
+        console.log("component mounted, calling updateFn");
         this.updateFn(this.graph);
     }
 }
