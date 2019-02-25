@@ -38,20 +38,16 @@ const drawNodes = (svg, graph, vm) => {
 
 
     // enters
-
-    let hover = null;
-
     let e = u.enter()
         .append("circle")
         .attr("r", d => d.type == "job" ? 12 : 16)
         .attr("class", d => d.type)
         .on("mouseover", function(d) {
-            if (hover) {
-                hover.classList.remove("hoverselect");
-            }
-            hover = this;
             this.classList.add("hoverselect");
             vm.$emit("hoverNode", d.id);
+        })
+        .on("mouseout", function(d) {
+            this.classList.remove("hoverselect");
         })
         .on("click", function (d) {
             vm.$emit("clickNode", d);

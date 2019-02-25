@@ -10,7 +10,7 @@
                 @clickNode="onGraphNodeClick"
                 @hoverNode="onHoverNode" />
             <history-graph 
-                :graph="historyFocusedOnSelection"
+                :graph="entireHistory"
                 :selection="selection" 
                 :graphCenter="graphCenter"
                 @clickNode="onGraphNodeClick"
@@ -32,7 +32,7 @@
 
         <!-- job node toggle -->
         <div class="jobToggle">
-            <input type="checkbox" v-model="showJobs" /> Jobs
+            <input type="checkbox" v-model="showJobs" /> Show Jobs
         </div>
 
     </div>

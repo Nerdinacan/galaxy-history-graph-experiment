@@ -1,9 +1,12 @@
 <template>
     <section class="history-graph" ref="container" v-resize.initial="onResize">
-        <svg ref="svg" :height="height" :width="width" v-zoom="'.zoomContainer'">
-            <g class="zoomContainer">
-                <g class="links"></g>
-                <g class="nodes"></g>
+        <svg ref="svg" :height="height" :width="width" 
+            v-zoom="'.zoomContainer'">
+            <g ref="offsetContainer">
+                <g class="zoomContainer">
+                    <g class="links"></g>
+                    <g class="nodes"></g>
+                </g>
             </g>
             <defs>
                 <filter id="filter-hoverselect" x="-50%" y="-50%" width="200%" height="200%">
@@ -32,7 +35,7 @@ export default {
 
     data: () => ({ 
         height: 0, 
-        width: 0 
+        width: 0
     }),
 
     props: {
@@ -75,11 +78,16 @@ export default {
     methods: {
 
         onResize(el) {
-            // console.log("onResize", this.graphSize);
-            // Object.assign(this, this.graphSize);
-            // console.log(el.clientWidth, el.clientHeight);
             this.width = parseInt(el.clientWidth);
             this.height = parseInt(el.clientHeight);
+
+            // shuffle entire graph to middle
+            let offsetContainer = this.$refs.offsetContainer;
+            if (offsetContainer) {
+                let translate = `translate(${this.width/2}, 200)`;
+                console.log("offset now", translate);
+                offsetContainer.setAttribute("transform", translate);
+            }
         }
 
     },
@@ -93,7 +101,6 @@ export default {
 
         // mutate graph instead of redrawing whole thing
         selection(newSelection) {
-            // console.log("selection changed", newSelection);
             for(let [key, node] of this.graph)
                 node.selected = newSelection.has(key);
             console.log("selection changed, calling updateFn");
