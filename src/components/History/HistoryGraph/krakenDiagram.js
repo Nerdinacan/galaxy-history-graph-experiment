@@ -10,7 +10,9 @@ import { krakenLayout } from "./krakenLayout";
 // Build a function that can be called when the graph
 // changes to update the positions of the nodes
 
-export const buildDiagram = (svgEl, vm) => {
+export const buildKrakenDiagram = (svgEl, layoutFn, vm) => {
+
+    // console.log("buildKrakenDiagram");
 
     // Install one-time setup fixtures
     let svg = select(svgEl);
@@ -25,11 +27,11 @@ export const buildDiagram = (svgEl, vm) => {
 
 const drawNodes = (svg, graph, vm) => {
 
-    console.group("drawNodes");
+    // console.group("drawNodes");
 
     let nodes = Array.from(graph).map(([k,v]) => v);
 
-    console.log("nodes", nodes);
+    // console.log("nodes", nodes);
 
     // updates
     let u = svg.select(".nodes")
@@ -72,7 +74,7 @@ const drawLinks = (svg, graph) => {
         }
     });
 
-    console.log("links", links);
+    // console.log("links", links);
 
     let u = svg.select(".links")
         .selectAll("path")

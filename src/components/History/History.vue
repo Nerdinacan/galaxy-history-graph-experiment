@@ -3,18 +3,24 @@
 
         <!-- main graphs -->
         <div class="history-graph-container">
+            
             <history-graph 
                 :graph="entireHistory"
                 :selection="selection" 
                 :graphCenter="graphCenter"
-                @clickNode="onGraphNodeClick"
-                @hoverNode="onHoverNode" />
+                :buildDiagram="buildForceDiagram"
+                @clickNode="onGraphNodeClick" />
+
             <history-graph 
-                :graph="historyFocusedOnSelection"
+                :graph="entireHistory"
                 :selection="selection" 
                 :graphCenter="graphCenter"
+                :buildDiagram="buildKrakenDiagram"
                 @clickNode="onGraphNodeClick"
-                @hoverNode="onHoverNode" />
+                @hoverNode="onHoverNode">
+                <job-toggle v-model="showJobs" />
+            </history-graph>
+           
         </div>
 
         <history-editor ref="editor" 
@@ -29,12 +35,6 @@
             v-if="hoverSelection" 
             :graph="fullGraph"
             :itemKey="hoverSelection" />
-
-        <!-- job node toggle -->
-        <div class="jobToggle">
-            <input type="checkbox" v-model="showJobs" /> Show Jobs
-        </div>
-
     </div>
 </template>
 
@@ -43,6 +43,7 @@
 import resize from 'vue-resize-directive';
 import { setIntersect } from "@/utilities/setUtilities.js";
 
+import JobToggle from "./JobToggle";
 import HistoryGraph from "./HistoryGraph/Graph";
 import HistoryEditor from "./HistoryEditor";
 import HoverSelection from "./HoverSelection";
@@ -50,6 +51,8 @@ import HoverSelection from "./HoverSelection";
 import { DatasetNode, generateGraph, generateJoblessGraph, focusedGraph } 
     from "./HistoryGraph/generateGraph";
 
+import { buildKrakenDiagram } from "./HistoryGraph/krakenDiagram";
+import { buildForceDiagram } from "./HistoryGraph/forceDiagram";
 
 export default {
 
@@ -60,7 +63,8 @@ export default {
     components: { 
         HistoryGraph, 
         HistoryEditor,
-        HoverSelection
+        HoverSelection,
+        JobToggle
     },
 
     props: {
@@ -73,9 +77,11 @@ export default {
         return {
             showJobs: true,
             selection: new Set(),
-            // history: null,
             hoverSelection: null,
-            graphCenter: null
+            graphCenter: null,
+
+            buildKrakenDiagram,
+            buildForceDiagram
         }
     },
 
@@ -119,7 +125,6 @@ export default {
 
         // history graph focused around the hoverselection
         historyFocusedOnSelection() {
-            // return this.entireHistory;
             return focusedGraph(this.entireHistory, this.hoverSelection, 2);
         }
         
@@ -163,7 +168,7 @@ export default {
             }
         },
         onEditorResize(container) {
-            console.log("editor resized", arguments);
+            // console.log("editor resized", arguments);
             // let container = this.$refs.container;
             // let editor = this.$refs.editor;
             // this.graphCenter = {
@@ -195,9 +200,9 @@ export default {
 <style>
 
 .jobToggle {
-    position: fixed;
-    top: 100px;
-    left: 20px;
+    position: absolute;
+    top: 18px;
+    left: 18px;
     z-index: 20;
 }
 

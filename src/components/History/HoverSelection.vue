@@ -1,5 +1,5 @@
 <template>
-    <section :class="item.type" class="hover-selection">
+    <section v-if="item" :class="item.type" class="hover-selection">
         <h4>{{ item.type }}</h4>
         <h1>{{ itemKey.substr(0,16) }}</h1>
         <h3>in: {{ incoming.join(", ") }}</h3>

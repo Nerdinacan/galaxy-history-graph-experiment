@@ -1,5 +1,7 @@
 /**
- * D3 layout for kraken directed graph
+ * D3 layout for kraken directed graph.
+ * Layout's job is to assign x/y coords to each vertex
+ * in the passed graph
  */
 
 import { dfs } from "./graphSearches";
@@ -9,8 +11,7 @@ const hSpacing = 80, vSpacing = 80;
 
 export const krakenLayout = (graph) => {
 
-
-    console.group("krakenLayout running");
+    // console.group("krakenLayout running");
 
     // column sorter
     let columnSortFn = buildSortFn(graph);
@@ -55,7 +56,7 @@ export const krakenLayout = (graph) => {
  */
 function generateRankPlacement(graph) {
 
-    console.log("generateRankPlacement")
+    // console.log("generateRankPlacement")
 
     // keep track of locations
     let placement = new Map(/* rank, Set(columns) */);

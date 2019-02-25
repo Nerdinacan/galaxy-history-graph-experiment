@@ -15,6 +15,7 @@
                 </filter>
             </defs>
         </svg>
+        <slot></slot>
     </section>
 </template>
 
@@ -23,7 +24,6 @@
 
 import zoom from "./zoom";
 import resize from "vue-resize-directive";
-import { buildDiagram } from "./diagram";
 import Graph from "graph.js";
 
 
@@ -41,7 +41,8 @@ export default {
     props: {
         graph: { type: Graph, required: true },
         graphCenter: { type: Object, required: false, default: null },
-        selection: { type: Set, required: true }
+        selection: { type: Set, required: true },
+        buildDiagram: { type: Function, required: true }
     },
 
     computed: {
@@ -69,8 +70,8 @@ export default {
         },
 
         updateFn() {
-            let fn = buildDiagram(this.$refs.svg, this);
-            return graph => this.$nextTick(() => fn(graph));
+            let fn = this.buildDiagram(this.$refs.svg, this.layout, this);
+            return (graph) => this.$nextTick(() => fn(graph));
         }
 
     },
@@ -88,7 +89,7 @@ export default {
             let offsetContainer = this.$refs.offsetContainer;
             if (offsetContainer) {
                 let translate = `translate(${this.width/2}, 200)`;
-                console.log("offset now", translate);
+                // console.log("offset now", translate);
                 offsetContainer.setAttribute("transform", translate);
             }
         }
