@@ -3,7 +3,21 @@
 
         <!-- main graphs -->
         <div class="history-graph-container">
-        
+
+            <history-graph 
+                :graph="historyFocusedOnSelection"
+                :selection="selection" 
+                :graphCenter="graphCenter"
+                :buildDiagram="buildForceDiagram"
+                @clickNode="doHoverSelect">
+            
+                <div class="search-radius">
+                    <input type="number" name="searchRadius" min="1" max="4" v-model="searchRadius" />
+                    <label for="searchRadius">Window Radius</label>
+                </div>
+
+            </history-graph>
+
             <history-graph 
                 :graph="entireHistory"
                 :selection="selection" 
@@ -11,21 +25,11 @@
                 :buildDiagram="buildKrakenDiagram"
                 @clickNode="onGraphNodeClick"
                 @hoverNode="doHoverSelect">
-
+                <job-toggle v-model="showJobs" />
                 <hover-selection 
                     v-if="hoverSelection" 
                     :graph="fullGraph"
                     :itemKey="hoverSelection" />
-
-            </history-graph>
-           
-            <history-graph 
-                :graph="historyFocusedOnSelection"
-                :selection="selection" 
-                :graphCenter="graphCenter"
-                :buildDiagram="buildForceDiagram"
-                @clickNode="doHoverSelect">
-                <job-toggle v-model="showJobs" />
             </history-graph>
 
         </div>
@@ -77,6 +81,8 @@ export default {
     data() {
         return {
             showJobs: true,
+            searchRadius: 2,
+
             selection: new Set(),
             hoverSelection: null,
             graphCenter: null,
@@ -113,7 +119,7 @@ export default {
         // Graphs
 
         fullGraph() {
-            return generateGraph(this.history);
+            return generateGraph(this.history, this.selection);
         },
 
         joblessGraph() {
@@ -121,12 +127,13 @@ export default {
         },
 
         entireHistory() {
+            this.selection = new Set();
             return this.showJobs ? this.fullGraph : this.joblessGraph;
         },
 
         // history graph focused around the hoverselection
         historyFocusedOnSelection() {
-            return focusedGraph(this.entireHistory, this.hoverSelection, 1);
+            return focusedGraph(this.entireHistory, this.hoverSelection, this.searchRadius);
         }
         
     },
@@ -198,13 +205,26 @@ export default {
 
 <style src="./styles/index.scss" lang="scss"></style>
 
-<style>
+<style lang="scss">
 
 .jobToggle {
     position: absolute;
     top: 18px;
     left: 18px;
     z-index: 20;
+}
+.search-radius {
+    position: absolute;
+    left: 3em;
+    bottom: 3em;
+    z-index: 20;
+    
+    input[type="number"] {
+        width:3em;
+        font-size: 2em;
+        display: block;
+        margin-bottom: 0.5em;
+    }
 }
 
 </style>

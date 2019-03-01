@@ -12,24 +12,25 @@ import {
 
 export function buildForceDiagram(svgEl, vm) {
 
-    var svg = select(svgEl);
-    var nodes = [];
-    var links = [];
+    let svg = select(svgEl);
+    let nodes = [], links = [];
 
-    var simulation = forceSimulation(nodes)
+    let simulation = forceSimulation(nodes)
         .force("collision", forceCollide().radius(30))
         .force("link", forceLink(links).strength(0))
         .alphaTarget(1)
         .on("tick", ticked);
 
-    var link = svg.select("g.edges").selectAll("line"),
+    let link = svg.select("g.edges").selectAll("line"),
         node = svg.select("g.nodes").selectAll("circle");
 
 
     let restart = (newNodes, newLinks, minRank, maxRank) => {
 
+        console.group("restart");
         console.log("newNodes", newNodes);
         console.log("newLinks", newLinks);
+        console.groupEnd();
 
         nodes = newNodes;
         links = newLinks;
@@ -108,11 +109,14 @@ export function buildForceDiagram(svgEl, vm) {
 }
 
 
+function iterKeys(iter) {
+    return new Set(Array.from(iter).map(([k, v]) => k));
+}
 
 function preprocessGraph(graph) {
 
-    let sources = new Set(Array.from(graph.sources()).map(([k, v]) => k));
-    let sinks = new Set(Array.from(graph.sinks()).map(([k, v]) => k));
+    let sources = iterKeys(graph.sources());
+    let sinks = iterKeys(graph.sinks());
     let maxRank = 0;
     let minRank = 0;
 

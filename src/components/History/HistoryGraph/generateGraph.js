@@ -175,8 +175,10 @@ function tharBeDragons(sourceGraph, connectedKey, isIncoming) {
     let connectedTo = sourceGraph.vertexValue(connectedKey);
     
     console.group("tharBeDragons");
+    console.log("connectedKey", connectedKey);
+    console.log("isIncoming", isIncoming);
     let blankSpot = new PlaceHolderNode(connectedTo, isIncoming);
-    console.log(blankSpot);
+    console.dir(blankSpot);
     console.groupEnd();
 
     return blankSpot;
