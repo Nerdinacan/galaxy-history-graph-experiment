@@ -1,10 +1,12 @@
 <template>
     <section class="dataset-selection">
 
+        
         <header>
-            <h4>Inputs</h4>
+            <h2>Temp Editor</h2>
+            <h4 v-if="selectedDatasets.size">Selected Inputs</h4>
         </header>
-        <ol>
+        <ol v-if="selectedDatasets.size">
             <li v-for="ds of selectedDatasets">
                 <selected-dataset class="dataset" :dataset="ds" 
                     @click="$emit('clickDataset', $event)" />
@@ -16,18 +18,18 @@
         </ol>
 
 
-        <header>
-        	<h4>Operaton</h4>
+        <header v-if="selectedDatasets.size">
+        	<h4>Selected Tool</h4>
         </header>
         
-        <a class="button" :class="toolClasses" 
+        <a v-if="selectedDatasets.size" class="button" :class="toolClasses" 
             @click.prevent="$emit('clickTool', tool)">
             {{ toolLinkLabel }}
         </a>
 
 
         <header>
-            <h4>Actions</h4>
+            <h4>Available Actions</h4>
         </header>
         <slot></slot>
 

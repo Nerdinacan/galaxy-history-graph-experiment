@@ -1,5 +1,5 @@
 <template>
-    <a href="#" @click.prevent="$emit('click', dataset.id)">
+    <a href="#" @click.prevent="$emit('click', dataset)">
         {{ dataset.id }}
     </a>
 </template>

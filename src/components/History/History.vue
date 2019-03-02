@@ -7,7 +7,8 @@
                 :graph="filteredHistoryGraph"
                 :selection="selection" 
                 :graphCenter="graphCenter"
-                :buildDiagram="buildDagDiagram">
+                :buildDiagram="buildDagDiagram"
+                @clickNode="focusNode">
 
                 <div class="search-radius">
                     <input type="number" 
@@ -27,7 +28,7 @@
                 :graphCenter="graphCenter"
                 :buildDiagram="buildDagDiagram"
                 @clickNode="toggleNodeSelect"
-                @hoverNode="focusNode">
+                @hoverNode="onMainHover">
 
                 <job-toggle v-model="showJobs" />
     
@@ -40,7 +41,6 @@
 
         </div>
 
-        <!--
         <history-editor ref="editor" 
             v-resize:debounce.initial="onEditorResize"
             :history="history" 
@@ -48,8 +48,6 @@
             :hoverDataset="hoverDataset"
             @unselectDataset="onUnselectDataset"
             @createJob="onCreateJob" />
-
-        -->
 
     </div>
 
@@ -62,10 +60,10 @@ import { setIntersect } from "@/utilities/setUtilities.js";
 
 import JobToggle from "./JobToggle";
 import HistoryGraph from "./Graph";
-// import HistoryEditor from "./HistoryEditor";
+import HistoryEditor from "./HistoryEditor";
 import HoverSelection from "./HoverSelection";
 
-import { DatasetNode } from "./viewModel";
+import { Dataset } from "./model";
 import { generateHistoryGraph, generateJoblessGraph, generateFocusedGraph, selectNodesOnGraph } 
     from "./generateGraph";
 
@@ -79,7 +77,7 @@ export default {
 
     components: { 
         HistoryGraph, 
-        // HistoryEditor,
+        HistoryEditor,
         HoverSelection,
         JobToggle
     },
@@ -93,9 +91,8 @@ export default {
             showJobs: true,
             searchRadius: 3,
             graphCenter: null,
-
-            selection: new Set(), // set of nodes currently selected
-            focus: null, // node we're focused on
+            currentSelection: new Set(),
+            currentFocus: null, // node we're focused on
             hoverSelection: null, // node we're mousing over
 
             buildDagDiagram
@@ -117,43 +114,61 @@ export default {
 
         // local view
         filteredHistoryGraph() {
-            
             let result = this.historyGraph;
-            
             if (!this.showJobs) {
-                let joblessResult = generateJoblessGraph(this.historyGraph);
-                console.log("same object?", result == joblessResult);
-                result = joblessResult;
+                result = generateJoblessGraph(this.historyGraph);
             }
-
-            let finalResult = generateFocusedGraph(result, this.focus, this.searchRadius);
-            console.log("same object?", finalResult == result);
-            result = finalResult;
-
+            if (this.searchRadius && this.focus) {
+                result = generateFocusedGraph(result, this.focus, this.searchRadius);
+            }
             return result;
         },
 
-        /*
+        
         selectedDatasets() {
-            let ids = Array.from(this.selection);
-            let ds = ids.map(id => this.getDatasetById(id));
-            return new Set(ds);
+            let datasets = Array.from(this.selection).filter(node => node instanceof Dataset);
+            return new Set(datasets);
         },
-      
+
         hoverDataset() {
-            if (this.focus) {
-                let ds = this.getDatasetById(this.focus);
-                if (ds) {
-                    if (!this.selection.has(ds.id)) {
-                        return ds;
+            let result = null;
+            if (this.hoverSelection && (this.hoverSelection instanceof Dataset)) {
+                result = this.hoverSelection;
+            }
+            return this.selection.has(result) ? null : result;
+        },
+
+        focus: {
+            get() {
+                if (this.currentFocus) {
+                    let foundNode = this.historyGraph.hasVertex(this.currentFocus.id);
+                    if (foundNode) {
+                        return this.currentFocus;
                     }
                 }
+                return null;
+            },
+            set(newFocus) {
+                this.currentFocus = newFocus;
             }
-            return null;        },
+        },
 
-        
-        */
-        
+        selection: {
+            get() {
+                if (this.currentSelection.size) {
+                    let result = new Set();
+                    let newMembers = Array.from(this.currentSelection).filter(o => {
+                        return this.historyGraph.hasVertex(o.id);
+                    });
+                    return new Set(newMembers);
+                }
+                return new Set();
+            },
+            set(newSelection) {
+                this.currentSelection = newSelection;
+            }
+        }
+
     },
 
     watch: {
@@ -174,24 +189,38 @@ export default {
     methods: {
 
         focusNode(node) {
-            console.log("focusNode", node);
-            this.focus = node;
+            if (node instanceof Dataset) {
+                this.focus = node;
+            }
         },
 
         toggleNodeSelect(node) {
-            console.log("toggleNodeSelect", node);
+            // console.log("toggleNodeSelect", node);
             if (!node) {
                 return;
             }
-            let newSelection = new Set(this.selection);
-            newSelection.has(node) 
-                ? newSelection.delete(node) 
-                : newSelection.add(node);
-            this.selection = newSelection;
+            let s = new Set(this.selection);
+            s.has(node) ? s.delete(node) : s.add(node);
+            this.selection = s;
+        },
+
+        onUnselectDataset(dataset) {
+            let s = new Set(this.selection);
+            s.delete(dataset)
+            this.selection = s;
         },
 
         clearSelection() {
             this.selection = new Set();
+        },
+
+        onCreateJob({ tool, toolParams }) {
+            this.$emit("runJob", { tool, toolParams, selection: this.selectedDatasets });
+        },
+
+        onMainHover(node) {
+            this.focusNode(node);
+            this.hoverSelection = node;
         },
 
         /*
@@ -201,7 +230,6 @@ export default {
             let intersection = setIntersect(this.selection, nodes);
             return intersection;
         },
-
 
         getDatasetById(id) {
             if (this.history) {
@@ -220,12 +248,6 @@ export default {
             }
         },
 
-        onUnselectDataset(id) {
-            let s = new Set(this.selection);
-            s.delete(id)
-            this.selection = s;
-        },
-
         doHoverSelect(o) {
             // keeps existing hover even on mouse-out
             if (o) {
@@ -236,9 +258,10 @@ export default {
         changeFocus(o) {
             console.log("changeFocus", o);
         },
+        */
 
         onEditorResize(container) {
-            // console.log("editor resized", arguments);
+            console.log("editor resized", arguments);
             // let container = this.$refs.container;
             // let editor = this.$refs.editor;
             // this.graphCenter = {
@@ -247,12 +270,7 @@ export default {
             // }
         },
 
-        onCreateJob(payload) {
-            this.$emit("runJob", Object.assign({}, payload, {
-                selection: this.selection
-            }));
-        },
-
+        /*
         reCenterGraph() {
             let container = this.$refs.container;
             let editor = this.$refs.editor;

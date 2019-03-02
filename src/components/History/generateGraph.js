@@ -1,6 +1,5 @@
 import Graph from "graph.js";
-import { dfs, radiusSearch } from "./graphSearches";
-import { RankMap } from "./RankMap";
+import { radiusSearch } from "./graphSearches";
 import { Dataset, Job, Placeholder } from "./model";
 
 
@@ -25,7 +24,7 @@ export function generateHistoryGraph(history) {
         job.outputs.forEach(id => g.addNewEdge(String(job.id), String(id)));
     });
 
-    console.log('g', g);
+    // console.log('g', g);
 
     return g;
 }

@@ -92,13 +92,13 @@ export default {
     watch: {
         
         graph(newGraph) {
-            console.log("heard graph change, calling updateFn")
+            // console.log("heard graph change, calling updateFn")
             this.updateFn(newGraph, this.selection);
         },
 
         // mutate graph instead of redrawing whole thing
         selection(newSelection) {
-            console.log("heard selection change, calling updateFn");
+            // console.log("heard selection change, calling updateFn");
             this.updateFn(this.graph, newSelection);
         },
 

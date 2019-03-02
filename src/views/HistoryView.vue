@@ -18,9 +18,11 @@ export default {
         }
     },
     methods: {
+        
         setHistory(history) {
             this.history = history;
         },
+
         runJob({ tool, toolParams, selection }) {
 
             executeJob(selection, tool, toolParams)

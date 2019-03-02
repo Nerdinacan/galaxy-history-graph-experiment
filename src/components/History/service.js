@@ -21,7 +21,7 @@ export async function getTools() {
  */
 export async function executeJob(inputs, tool, toolParams) {
 
-    console.log("executeJob", inputs, tool, toolParams);
+    // console.log("executeJob", inputs, tool, toolParams);
     
     if (!tool) {
         throw new Error("missing tool");
@@ -35,7 +35,7 @@ export async function executeJob(inputs, tool, toolParams) {
 
     let newJob = createJob({
         id: uuidv4(),
-        inputs: Array.from(inputs),
+        inputs: Array.from(inputs).map(input => input.id),
         outputs: [ newDataset.id ],
     });
 

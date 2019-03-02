@@ -43,7 +43,6 @@ import ToolParameters from "./ToolParameters";
 
 import { loadHistoryById } from "./service";
 import { Dataset } from "./model";
-import { DatasetNode } from "./HistoryGraph/viewModel";
 
 
 export default {
