@@ -7,6 +7,13 @@ import { select, event } from "d3-selection";
 import { krakenLayout } from "./krakenLayout";
 
 
+
+// baseline padding for positioning nodes
+const hSpacing = 80, vSpacing = 80;
+const getXCoord = (d) => hSpacing * d.col;
+const getYCoord = (d) => vSpacing * d.rank;
+
+
 // Build a function that can be called when the graph
 // changes to update the positions of the nodes
 
@@ -25,19 +32,14 @@ export const buildKrakenDiagram = (svgEl, vm) => {
     }
 }
 
-const drawNodes = (svg, graph, vm) => {
-
-    // console.group("drawNodes");
+export const drawNodes = (svg, graph, vm) => {
 
     let nodes = Array.from(graph).map(([k,v]) => v);
-
-    // console.log("nodes", nodes);
 
     // updates
     let u = svg.select("g.nodes")
         .selectAll("circle")
         .data(nodes, d => d.id);
-
 
     // enters
     let e = u.enter()
@@ -59,13 +61,13 @@ const drawNodes = (svg, graph, vm) => {
 
     e.merge(u)
         .classed("selected", d => d.selected)
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y);
+        .attr("cx", d => getXCoord(d))
+        .attr("cy", d => getYCoord(d));
 
     console.groupEnd();
 }
 
-const drawLinks = (svg, graph) => {
+export const drawLinks = (svg, graph) => {
 
     let links = Array.from(graph.edges()).map(([sourceKey, targetKey]) => {
         return {
@@ -119,11 +121,14 @@ function drawLine(d) {
         s = d.targetObj, t = d.sourceObj; 
     }
 
-    var dx = t.x - s.x,
-        dy = t.y - s.y,
+    let sx = getXCoord(s), sy = getYCoord(s),
+        tx = getXCoord(t), ty = getYCoord(t);
+
+    var dx = tx - sx,
+        dy = ty - sy,
         dr = dir * Math.sqrt(dx * dx + dy * dy);
 
-    return `M ${s.x},${s.y} L${t.x},${t.y}`;
+    return `M ${sx},${sy} L${tx},${ty}`;
 
 }
 
@@ -136,13 +141,14 @@ function drawArc(d) {
         s = d.targetObj, t = d.sourceObj; 
     }
 
-    var dx = t.x - s.x,
-        dy = t.y - s.y,
+    let sx = getXCoord(s), sy = getYCoord(s),
+        tx = getXCoord(t), ty = getYCoord(t);
+
+    var dx = tx - sx,
+        dy = ty - sy,
         dr = dir * Math.sqrt(dx * dx + dy * dy);
 
-    return `M ${s.x},${s.y} A${dr},${dr} 0,0,1 ${t.x},${t.y}`;
-
-
+    return `M ${sx},${sy} A${dr},${dr} 0,0,1 ${tx},${ty}`;
 }
 
 

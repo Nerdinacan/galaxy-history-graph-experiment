@@ -1,5 +1,3 @@
-import { mapIterator } from "@/utilities/iteratorUtils";
-import { graphToD3Inputs, DatasetNode, JobNode } from "./generateGraph";
 import { select, selectAll } from "d3-selection";
 import { scaleLinear } from "d3-scale";
 import {
@@ -13,7 +11,8 @@ import {
 export function buildForceDiagram(svgEl, vm) {
 
     let svg = select(svgEl);
-    let nodes = [], links = [];
+    let nodes = [];
+    let links = [];
 
     let simulation = forceSimulation(nodes)
         .force("collision", forceCollide().radius(30))
@@ -21,16 +20,15 @@ export function buildForceDiagram(svgEl, vm) {
         .alphaTarget(1)
         .on("tick", ticked);
 
-    let link = svg.select("g.edges").selectAll("line"),
-        node = svg.select("g.nodes").selectAll("circle");
-
+    let link = svg.select("g.edges").selectAll("line");
+    let node = svg.select("g.nodes").selectAll("circle");
 
     let restart = (newNodes, newLinks, minRank, maxRank) => {
 
-        console.group("restart");
-        console.log("newNodes", newNodes);
-        console.log("newLinks", newLinks);
-        console.groupEnd();
+        // console.group("restart");
+        // console.log("newNodes", newNodes);
+        // console.log("newLinks", newLinks);
+        // console.groupEnd();
 
         nodes = newNodes;
         links = newLinks;
@@ -60,7 +58,7 @@ export function buildForceDiagram(svgEl, vm) {
             .on("click", d => {
                 vm.$emit("clickNode", d.id);
             })
-            .on("mouseover", function(d) {
+            .on("mouseover", d => {
                 if (d.type == "dataset" || d.type == "job") {
                     vm.$emit("hoverNode", d.id);
                 }
@@ -109,10 +107,6 @@ export function buildForceDiagram(svgEl, vm) {
 }
 
 
-function iterKeys(iter) {
-    return new Set(Array.from(iter).map(([k, v]) => k));
-}
-
 function preprocessGraph(graph) {
 
     let sources = iterKeys(graph.sources());
@@ -149,4 +143,9 @@ function preprocessGraph(graph) {
         });
 
     return { links, nodes, maxRank, minRank };
+}
+
+
+function iterKeys(iter) {
+    return new Set(Array.from(iter).map(([k, v]) => k));
 }

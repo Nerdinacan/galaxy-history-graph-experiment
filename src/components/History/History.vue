@@ -1,7 +1,6 @@
 <template>
     <div class="history" v-if="history">
 
-        <!-- main graphs -->
         <div class="history-graph-container">
 
             <history-graph 
@@ -10,13 +9,28 @@
                 :graphCenter="graphCenter"
                 :buildDiagram="buildForceDiagram"
                 @clickNode="doHoverSelect">
-            
+
                 <div class="search-radius">
-                    <input type="number" name="searchRadius" min="1" max="4" v-model="searchRadius" />
-                    <label for="searchRadius">Window Radius</label>
+                    <input type="number" 
+                        name="searchRadius" 
+                        min="1" max="4" 
+                        v-model="searchRadius" />
+                    <label for="searchRadius">
+                        Window Radius
+                    </label>
                 </div>
 
             </history-graph>
+
+
+            <history-graph 
+                :graph="historyFocusedOnSelection"
+                :selection="selection" 
+                :graphCenter="graphCenter"
+                :buildDiagram="buildKrakenWindow"
+                @clickNode="doHoverSelect">
+            </history-graph>
+
 
             <history-graph 
                 :graph="entireHistory"
@@ -25,11 +39,13 @@
                 :buildDiagram="buildKrakenDiagram"
                 @clickNode="onGraphNodeClick"
                 @hoverNode="doHoverSelect">
+
                 <job-toggle v-model="showJobs" />
                 <hover-selection 
                     v-if="hoverSelection" 
                     :graph="fullGraph"
                     :itemKey="hoverSelection" />
+
             </history-graph>
 
         </div>
@@ -43,6 +59,7 @@
             @createJob="onCreateJob" /> -->
 
     </div>
+
 </template>
 
 <script>
@@ -60,6 +77,9 @@ import { DatasetNode, generateGraph, generateJoblessGraph, focusedGraph }
 
 import { buildKrakenDiagram } from "./HistoryGraph/krakenDiagram";
 import { buildForceDiagram } from "./HistoryGraph/forceDiagram";
+import { buildKrakenWindow } from "./HistoryGraph/krakenWindow";
+
+import { generateRankAndColumn } from "./HistoryGraph/generateGraph";
 
 export default {
 
@@ -88,7 +108,8 @@ export default {
             graphCenter: null,
 
             buildKrakenDiagram,
-            buildForceDiagram
+            buildForceDiagram,
+            buildKrakenWindow
         }
     },
 
@@ -116,6 +137,8 @@ export default {
             return null;
         },
 
+        
+
         // Graphs
 
         fullGraph() {
@@ -126,12 +149,13 @@ export default {
             return generateJoblessGraph(this.fullGraph);
         },
 
+
+        // Ouptut graphs
+
         entireHistory() {
-            this.selection = new Set();
             return this.showJobs ? this.fullGraph : this.joblessGraph;
         },
 
-        // history graph focused around the hoverselection
         historyFocusedOnSelection() {
             return focusedGraph(this.entireHistory, this.hoverSelection, this.searchRadius);
         }
@@ -139,16 +163,30 @@ export default {
     },
 
     watch: {
+
         history(newHistory, oldHistory) {
+            this.selection = new Set();
             this.$nextTick(() => {
                 let newDsIds = newHistory.datasets.map(ds => ds.id);
                 let intersection = setIntersect(newDsIds, this.selection);
                 this.selection = intersection;
             })
         }
+
     },
 
     methods: {
+
+        // current selection that also exists in passed history
+        relevantSelection(graph) {
+            debugger;
+            let nodes = Array.from(graph).map(([k,v]) => v);
+
+            let intersection = setIntersect(this.selection, nodes);
+            return intersection;
+        },
+
+
         getDatasetById(id) {
             if (this.history) {
                 let datasets = this.history.datasets;
@@ -156,6 +194,7 @@ export default {
             }
             return null;
         },
+
         onGraphNodeClick(nodeData) {
             if (nodeData instanceof DatasetNode) {
                 let id = nodeData.id;
@@ -164,17 +203,20 @@ export default {
                 this.selection = s;
             }
         },
+
         onUnselectDataset(id) {
             let s = new Set(this.selection);
             s.delete(id)
             this.selection = s;
         },
+
         doHoverSelect(o) {
             // keeps existing hover even on mouse-out
             if (o) {
                 this.hoverSelection = o;
             }
         },
+
         onEditorResize(container) {
             // console.log("editor resized", arguments);
             // let container = this.$refs.container;
@@ -184,6 +226,7 @@ export default {
             //     y: editor.clientHeight / 2
             // }
         },
+
         onCreateJob(payload) {
             this.$emit("runJob", Object.assign({}, payload, {
                 selection: this.selection

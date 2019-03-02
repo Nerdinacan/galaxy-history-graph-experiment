@@ -6,9 +6,6 @@
 
 import { dfs } from "./graphSearches";
 
-// baseline padding for positioning nodes
-const hSpacing = 80, vSpacing = 80;
-
 export const krakenLayout = (graph) => {
 
     // console.group("krakenLayout running");
@@ -23,30 +20,16 @@ export const krakenLayout = (graph) => {
         // more edges pushes the node to the right
         // (to the end of the list)
         let sortedColumns = Array.from(columns).sort(columnSortFn);
-        // console.log(rank, sortedColumns);
 
-        // turn columns into nodes, mutate nodes to set x/y
         sortedColumns
             .map(key => graph.vertexValue(key))
             .forEach((node, columnIndex) => {
-
-                // coords in placement grid
                 node.rank = rank;
                 node.col = columnIndex;
-
-                // center
-                // let coord = (-0.5 * sortedColumns.length) + columnIndex;
-                // node.x = hSpacing * coord;
-
-                // left align
-                node.x = hSpacing * columnIndex;
-
-                // time marches forward...
-                node.y = vSpacing * rank;
             });
     }
 
-    console.groupEnd();
+    // console.groupEnd();
 }
 
 
@@ -54,7 +37,7 @@ export const krakenLayout = (graph) => {
  * Generates a grid representation of the directed graph, so we 
  * can extract rank and column for rendering
  */
-function generateRankPlacement(graph) {
+export function generateRankPlacement(graph) {
 
     // console.log("generateRankPlacement")
 
