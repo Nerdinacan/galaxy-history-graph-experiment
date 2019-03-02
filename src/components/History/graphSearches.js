@@ -50,7 +50,7 @@ export function radiusSearch(graph, startKey, maxRadius = 1) {
 }
 
 /**
- * Depth-first search, keeps track of rank for rendering purposes.
+ * Depth-first search, keeps track of rank.
  * @param {*} graph 
  * @param {*} startKey 
  */
@@ -84,35 +84,6 @@ export function dfs(graph, startKey) {
         for(let [adjKey] of graph.verticesTo(key)) {
             if (!visited.has(adjKey)) {
                 yield *visit(adjKey, rank - 1);
-            }
-        }
-    }
-
-    return visit(startKey, 0);
-}
-
-export function dfsTraverse(graph, method, startKey) {
-
-    if (!(graph instanceof Graph)) {
-        throw new Error("Wrong graph parameter, should be a graph from npm: graph.js");       
-    }
-
-    const visited = new Set();
-
-    function *visit(key, rank) {
-
-        visited.add(key);
-
-        // output key, rank and node object
-        // rank is a rough indicator of the depth of the node
-        // as starting from the level of the startKey node
-        yield { key, rank, node: graph.vertexValue(key) };
-
-        // in a directed graph, the outgoing vertices go forward
-        // so increment the rank
-        for(let [adjKey] of method.call(graph, key)) {
-            if (!visited.has(adjKey)) {
-                yield *visit(adjKey, rank + 1);
             }
         }
     }

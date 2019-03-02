@@ -8,12 +8,6 @@
                     <g class="nodes"></g>
                 </g>
             </g>
-            <defs>
-                <filter id="filter-hoverselect" x="-50%" y="-50%" width="200%" height="200%">
-                    <feDropShadow dx="0" dy="0" stdDeviation="1" flood-color="white" />
-                    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="rgba(0,0,0,1)" />
-                </filter>
-            </defs>
         </svg>
         <slot></slot>
     </section>
@@ -70,8 +64,7 @@ export default {
         },
 
         updateFn() {
-            let fn = this.buildDiagram(this.$refs.svg, this);
-            return (graph) => this.$nextTick(() => fn(graph));
+            return this.buildDiagram(this.$refs.svg, this);
         }
 
     },
@@ -100,15 +93,13 @@ export default {
         
         graph(newGraph) {
             console.log("heard graph change, calling updateFn")
-            this.updateFn(newGraph);
+            this.updateFn(newGraph, this.selection);
         },
 
         // mutate graph instead of redrawing whole thing
         selection(newSelection) {
-            for(let [key, node] of this.graph)
-                node.selected = newSelection.has(key);
-            console.log("selection changed, calling updateFn");
-            this.updateFn(this.graph);
+            console.log("heard selection change, calling updateFn");
+            this.updateFn(this.graph, newSelection);
         },
 
         graphCenter(windowCenter) {
@@ -127,4 +118,4 @@ export default {
 
 </script>
 
-<style src="./graphStyles.scss" lang="scss"></style>
+<style src="./styles/graphStyles.scss" lang="scss"></style>

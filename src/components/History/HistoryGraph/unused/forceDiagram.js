@@ -56,11 +56,11 @@ export function buildForceDiagram(svgEl, vm) {
             .classed("job", d => d.type == "job")
             .classed("placeholder", d => d.type == "placeholder")
             .on("click", d => {
-                vm.$emit("clickNode", d.id);
+                vm.$emit("clickNode", d);
             })
             .on("mouseover", d => {
                 if (d.type == "dataset" || d.type == "job") {
-                    vm.$emit("hoverNode", d.id);
+                    vm.$emit("hoverNode", d);
                 }
             })
             // .call(function (node) { node.transition().attr("r", 8); })

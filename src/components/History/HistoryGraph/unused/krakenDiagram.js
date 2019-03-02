@@ -48,7 +48,7 @@ export const drawNodes = (svg, graph, vm) => {
         .attr("class", d => d.type)
         .on("mouseover", function(d) {
             this.classList.add("hoverselect");
-            vm.$emit("hoverNode", d.id);
+            vm.$emit("hoverNode", d);
         })
         .on("mouseout", function(d) {
             this.classList.remove("hoverselect");

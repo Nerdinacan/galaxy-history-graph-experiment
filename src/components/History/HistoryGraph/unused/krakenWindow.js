@@ -1,6 +1,5 @@
 import Graph from "graph.js";
 import { select, event } from "d3-selection";
-import { generateRankAndColumn } from "./generateGraph";
 
 // baseline spacing
 const hSpacing = 80, vSpacing = 80;
@@ -74,3 +73,57 @@ function doLayout(graph) {
     return { g, maxRank, minRank };
 }
 
+
+
+
+
+/**
+ * Mutate passed graph with rank and column properties for use with
+ * kraken-style diagram. Starts iteration with source nodes of the
+ * input and assumes graph is directed and acyclic.
+ * 
+ * @param {Graph} input Starting graph
+ */
+function generateRankAndColumn(input, sourceKey) {
+
+    // rank collections
+    let placement = new RankMap();
+
+    // rank collector
+    for (let { key, rank, node } of dfs(input, sourceKey)) {
+        placement.set(rank, key);
+    }
+
+    // column sorter
+    let sortFn = columnSort(input);
+    
+    // put nodes into ranks then loop over the collections
+    for (let [rank, columns] of placement) {
+        sortFn(columns).forEach((key, columnIndex) => {
+            let node = input.vertexValue(key);
+            node.rank = rank;
+            node.col = columnIndex;
+        });
+    }
+
+    return input;
+}
+
+
+/**
+ * Generate a function that transforms a column set into
+ * an array then sorts it according to some logic, the order
+ * of which will be the horizontal columns on the end layout
+ * 
+ * @param {Graph} graph 
+ */
+function columnSort(graph) {
+
+    let sortFn = (a, b) => {
+        return edgeCount(graph, a) - edgeCount(graph, b);
+    }
+
+    return function (setOfNodes) {
+        return Array.from(setOfNodes).sort(sortFn);
+    }
+}

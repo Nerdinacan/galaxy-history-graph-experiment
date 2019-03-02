@@ -4,7 +4,7 @@
  * in the passed graph
  */
 
-import { dfs } from "./graphSearches";
+import { dfs } from "../graphSearches";
 
 export const krakenLayout = (graph) => {
 

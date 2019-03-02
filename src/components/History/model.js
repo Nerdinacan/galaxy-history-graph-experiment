@@ -7,13 +7,11 @@ import uuidv4 from "uuid/v4";
 
 export function Dataset(props = {}) {
     this.id = null;
-    this.type = "dataset";
     Object.assign(this, props);
 }
 
 export function Job(props = {}) {
     this.id = null;
-    this.type = "job";
     this.inputs = [];
     this.outputs = [];
     Object.assign(this, props);
@@ -29,3 +27,11 @@ export const createDataset = props => new Dataset(props);
 export const createJob = props => new Job(props);
 export const createTool = props => new Tool(props);
 
+
+export function Placeholder(connectedTo, isIncoming) {
+    this.id = `placeholder-${Placeholder.counter++}`;
+    this.startKey = isIncoming ? this.id : connectedTo.id;
+    this.endKey = isIncoming ? connectedTo.id : this.id;
+}
+
+Placeholder.counter = 0;
