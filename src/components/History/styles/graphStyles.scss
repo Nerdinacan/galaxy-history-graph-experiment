@@ -25,6 +25,10 @@
             stroke: transparent;
         }
 
+        &.focused {
+            stroke: black !important;
+        }
+
         &.job {
             fill: white;
             // stroke: white;

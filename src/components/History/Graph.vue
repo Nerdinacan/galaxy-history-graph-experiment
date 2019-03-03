@@ -8,6 +8,19 @@
                     <g class="nodes"></g>
                 </g>
             </g>
+            <defs>
+                <marker id="arrow"
+                    markerUnits="strokeWidth"
+                    markerWidth="12"
+                    markerHeight="12"
+                    viewBox="0 0 12 24"
+                    refX="19"
+                    refY="6"
+                    orient="auto">
+                    <path d="M2,2 L10,6 L2,10 L6,6 L2,2" 
+                        style="fill: #ccc"></path>
+                </marker>
+            </defs>
         </svg>
         <slot></slot>
     </section>
@@ -36,6 +49,7 @@ export default {
         graph: { type: Graph, required: true },
         graphCenter: { type: Object, required: false, default: null },
         selection: { type: Set, required: true },
+        focus: { type: Object, required: false, default: null },
         buildDiagram: { type: Function, required: true }
     },
 
@@ -93,13 +107,13 @@ export default {
         
         graph(newGraph) {
             // console.log("heard graph change, calling updateFn")
-            this.updateFn(newGraph, this.selection);
+            this.updateFn(newGraph, this.selection, this.focus);
         },
 
         // mutate graph instead of redrawing whole thing
         selection(newSelection) {
             // console.log("heard selection change, calling updateFn");
-            this.updateFn(this.graph, newSelection);
+            this.updateFn(this.graph, newSelection, this.focus);
         },
 
         graphCenter(windowCenter) {

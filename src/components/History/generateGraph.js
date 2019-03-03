@@ -82,12 +82,8 @@ export function generateFocusedGraph(input, startNode, maxRadius = 1) {
 
     // add radius and focused properties to this node
     for (let { key, radius, node } of radiusSearch(input, startKey, maxRadius)) {
-        if (!node) {
-            debugger;
-        }
         node.radius = radius;
         node.focused = key == startKey;
-        // console.log("node", key, node);
         g.addVertex(key, node);
     }
 

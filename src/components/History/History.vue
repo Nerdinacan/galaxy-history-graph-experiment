@@ -6,6 +6,7 @@
             <history-graph 
                 :graph="filteredHistoryGraph"
                 :selection="selection" 
+                :focus="focus"
                 :graphCenter="graphCenter"
                 :buildDiagram="buildDagDiagram"
                 @clickNode="focusNode">

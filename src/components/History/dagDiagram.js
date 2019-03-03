@@ -18,8 +18,10 @@ export function buildDagDiagram(svgEl, vm) {
 
     let svg = select(svgEl);
 
-    return function(graph, selection = new Set()) {
-        
+    return function(graph, selection = new Set(), focused = null) {
+
+        console.log("focused", focused);
+
         // convert data, let dagre do the layout
         let dag = convertGraphToDagre(graph);
         dagre.layout(dag, layoutOptions);
@@ -45,6 +47,7 @@ export function buildDagDiagram(svgEl, vm) {
             })
             .merge(node)
                 .classed("selected", d => selection.has(d.data))
+                .classed("focused", d => d.data === focused)
                 .classed("dataset", d => d.data instanceof Dataset)
                 .classed("job", d => d.data instanceof Job)
                 .classed("placeholder", d => d.data instanceof Placeholder)
@@ -61,10 +64,10 @@ export function buildDagDiagram(svgEl, vm) {
         // Keep the exiting links connected to the moving remaining nodes.
         link.exit().transition()
             .attr("stroke-opacity", 0)
-            .attrTween("x1", function (d) { return function () { return d.source.x; }; })
-            .attrTween("x2", function (d) { return function () { return d.target.x; }; })
-            .attrTween("y1", function (d) { return function () { return d.source.y; }; })
-            .attrTween("y2", function (d) { return function () { return d.target.y; }; })
+            .attrTween("x1", d => () => d.source.x)
+            .attrTween("x2", d => () => d.target.x)
+            .attrTween("y1", d => () => d.source.y)
+            .attrTween("y2", d => () => d.target.y)
             .remove();
 
         link = link.enter().append("line")
@@ -74,7 +77,8 @@ export function buildDagDiagram(svgEl, vm) {
                 .attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
-                .attr("y2", d => d.target.y);
+                .attr("y2", d => d.target.y)
+                .attr("marker-end","url(#arrow)");
 
     }
 }
