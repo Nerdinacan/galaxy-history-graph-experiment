@@ -15,16 +15,6 @@ div.history
 
 @import "./hoverSelection";
 
-
-@mixin historyPanelFlexContainer() {
-    display: flex;
-    justify-content: flex-end;
-
-    > section {
-        max-width: 250px;
-    }
-}
-
 // click through the empty part of the
 // panels container, but re-capture in the
 // populated areas of the overlay
@@ -117,28 +107,26 @@ main {
 
         .history-graph {
             @include fill();
-            flex: 2;
+            flex: 1;
             position: relative;
             overflow: hidden;
             border-left: 1px dotted grey;
 
-            // &:first-child {
-            //     flex: 2;
-            //     // background: rgba(0,0,0,0.05);
-            // }
             &:last-child {
-                flex: 4;
+                flex: 2;
             }
         }
     }
 
     .history-editor-panels {
+
         @include fill();
+        @include historyHandleClickThrough();
+
         z-index: 1;
         height: 100vh;
-        
-        @include historyPanelFlexContainer();
-        @include historyHandleClickThrough();
+        display: flex;
+        justify-content: flex-end;
         
         section {
             margin-right: 2em;
@@ -154,18 +142,21 @@ main {
 
         .dataset-selection {
             @include fadeIn();
+            width: 160px;
         }
 
         // Tool List
 
         &.hide-tool-list .tool-list {
-            max-width: 0;
             @include fadeOut();
+            max-width: 0;
         }
 
         .tool-list {
             @include scrollableContent(".content");
             @include fadeIn();
+            max-width: 240px;
+            width: 20%;
         }
         
         // Tool parameter form
@@ -173,10 +164,12 @@ main {
         &.hide-tool-parameters .tool-parameters {
             display: none;
             @include fadeOut();
+            max-width: 0;
         }
 
         .tool-parameters {
             @include fadeIn();
+            max-width: 400px;
         }
 
     }

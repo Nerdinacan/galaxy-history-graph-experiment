@@ -81,7 +81,7 @@ export default {
             return {
                 "hide-dataset-selection": !this.hasSelection,
                 "hide-tool-list": !this.hasSelection || this.hasTool,
-                "hide-tool-parameters": !this.hasTool || this.toolParamsValid
+                "hide-tool-parameters": !this.hasSelection || (!this.hasTool || this.toolParamsValid)
             }
         },
 

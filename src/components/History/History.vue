@@ -20,6 +20,8 @@
                     </label>
                 </div>
 
+                <job-toggle v-model="showJobs" />
+
             </history-graph>
 
             <history-graph 
@@ -31,7 +33,7 @@
                 @clickNode="toggleNodeSelect"
                 @hoverNode="onMainHover">
 
-                <job-toggle v-model="showJobs" />
+                
     
                 <hover-selection 
                     v-if="hoverSelection" 
@@ -219,8 +221,8 @@ export default {
 
 .jobToggle {
     position: absolute;
-    top: 18px;
-    left: 18px;
+    bottom: 3em;
+    right: 3em;
     z-index: 20;
 }
 .search-radius {

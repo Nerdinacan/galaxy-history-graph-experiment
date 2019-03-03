@@ -31,7 +31,7 @@ export function buildDagDiagram(svgEl, vm) {
         let node = svg.select("g.nodes").selectAll("circle");
         
         // peel apart dag to get the parts we need for d3
-        let { nodes, links } = getParts(dag);
+        let { nodes, links } = preprocessDAG(dag);
 
         // Apply the general update pattern to the nodes.
         node = node.data(nodes, d => d.id);
@@ -83,7 +83,7 @@ export function buildDagDiagram(svgEl, vm) {
 }
 
 
-function getParts(dag) {
+function preprocessDAG(dag) {
 
     let nodeKeys = dag.nodes();
 
