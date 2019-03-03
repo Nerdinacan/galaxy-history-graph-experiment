@@ -23,10 +23,7 @@
 
         </dataset-selection>
 
-        <tool-list
-            :history="history" 
-            :selectedDatasets="selectedDatasets" 
-            @toolSelected="onToolSelected" />
+        <tool-list @toolSelected="onToolSelected" />
 
         <!-- <tool-parameters 
             :tool="tool"
@@ -80,9 +77,9 @@ export default {
         // show hide panels by adding classes to container
         statusClasses() {
             return {
-                "dataset-selection": this.hasSelection,
-                "tool-list": this.hasSelection && !this.hasTool,
-                "tool-parameters": this.hasSelection && this.hasTool
+                "hide-dataset-selection": !this.hasSelection,
+                "hide-tool-list": !this.hasSelection || this.hasTool,
+                "hide-tool-parameters": !this.hasSelection && this.hasTool
             }
         },
 

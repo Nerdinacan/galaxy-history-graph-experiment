@@ -22,7 +22,8 @@
                 </div>
 
             </history-graph>
-       
+
+
             <history-graph 
                 :graph="historyGraph"
                 :selection="selection" 
@@ -40,6 +41,7 @@
 
             </history-graph>
 
+
         </div>
 
         <history-editor ref="editor" 
@@ -51,8 +53,8 @@
             @createJob="onCreateJob" />
 
     </div>
-
 </template>
+
 
 <script>
 
@@ -170,21 +172,6 @@ export default {
             }
         }
 
-    },
-
-    watch: {
-
-        /*
-        history(newHistory, oldHistory) {
-            this.selection = new Set();
-            this.focus = null;
-            // this.$nextTick(() => {
-            //     let newDsIds = newHistory.datasets.map(ds => ds.id);
-            //     let intersection = setIntersect(newDsIds, this.selection);
-            //     this.selection = intersection;
-            // })
-        }
-        */
     },
 
     methods: {

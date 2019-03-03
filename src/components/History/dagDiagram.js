@@ -16,11 +16,11 @@ const dataNodeSize = d => d.data instanceof Job ? 10 : 16;
 
 export function buildDagDiagram(svgEl, vm) {
 
+
     let svg = select(svgEl);
 
-    return function(graph, selection = new Set(), focused = null) {
 
-        console.log("focused", focused);
+    return function(graph, selection = new Set(), focused = null) {
 
         // convert data, let dagre do the layout
         let dag = convertGraphToDagre(graph);
@@ -30,7 +30,7 @@ export function buildDagDiagram(svgEl, vm) {
         let link = svg.select("g.edges").selectAll("line");
         let node = svg.select("g.nodes").selectAll("circle");
         
-
+        // peel apart dag to get the parts we need for d3
         let { nodes, links } = getParts(dag);
 
         // Apply the general update pattern to the nodes.
@@ -79,7 +79,6 @@ export function buildDagDiagram(svgEl, vm) {
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y)
                 .attr("marker-end","url(#arrow)");
-
     }
 }
 
@@ -87,7 +86,9 @@ export function buildDagDiagram(svgEl, vm) {
 function getParts(dag) {
 
     let nodeKeys = dag.nodes();
+
     let nodes = nodeKeys.map(key => dag.node(key));
+
     let links = dag.edges().map(({v,w}) => {
         let obj = dag.edge(v,w);
         return Object.assign({}, obj, {

@@ -1,5 +1,4 @@
 @mixin fill() {
-    
     position: absolute;
     margin: 0;
     padding: 0;
@@ -7,10 +6,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-
-    // &::-webkit-scrollbar {
-    //     display: none;
-    // }
 }
 
 @mixin typography() {
@@ -35,36 +30,10 @@ container
 
     // content scrolls
     #{$selector} {
-        overflow: scroll;
+        flex: 1;
+        overflow-y: scroll;
         &::-webkit-scrollbar {
             display: none;
         }
-    }
-}
-
-
-
-/*
-
-Show/hide history editor sections based on status
-classes on container element
-
-// hide by default
-.label {
-    display:none;
-}
-
-// make visible with duplicate class status toggle on a container
-.label .label {
-    display: initial
-}
-
-*/
-@mixin parentStatusToggles($label) {
-    #{$label} {
-        display: none;
-    }
-    &#{$label} #{$label} {
-        display: initial;
     }
 }

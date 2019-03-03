@@ -29,6 +29,7 @@ div.history
         min-width: 200px;
     }
     .tool-list {
+        min-width: 200px;
         max-width: 250px;
     }
     .tool-parameters {
@@ -153,24 +154,38 @@ main {
         z-index: 1;
         height: 100vh;
 
-        // @include parentStatusToggles(".dataset-selection");
-        @include parentStatusToggles(".tool-list");
-        @include parentStatusToggles(".tool-parameters");
         @include historyPanelFlexContainer();
         @include historyHandleClickThrough();
         
         section {
             margin-right: 2em;
         }
-    }
 
 
-    // leave header in place, scroll content
-    // need to define it in terms of container visibility flag
-    // since display: none and display: flex collide
-    &.tool-list .tool-list {
-        @include scrollableContent(".content");
+        // Selection & Actions
+
+        &.hide-dataset-selection .dataset-selection {
+            display: none;
+        }
+
+        // Tool List
+
+        &.hide-tool-list .tool-list {
+            display: none;
+        }
+
+        .tool-list {
+            @include scrollableContent(".content");
+        }
+        
+        // Tool parameter form
+        
+        &.hide-tool-parameters .tool-parameters {
+            display: none;
+        }
+
     }
+
 
     // lists
     ul, 
@@ -196,3 +211,4 @@ main {
         border-color: $ready-color;
     }
 }
+
