@@ -1,5 +1,5 @@
 <template>
-    <div class="history-editor-panels" :class="statusClasses">
+    <aside class="history-editor-panels" :class="statusClasses">
 
         <dataset-selection
             :selectedDatasets="selectedDatasets"
@@ -31,7 +31,7 @@
             v-model="toolParamsValid" 
             @paramsValid="onParamsValid" />
 
-    </div>
+    </aside>
 </template>
 
 <script>
