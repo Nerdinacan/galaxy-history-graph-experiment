@@ -1,5 +1,5 @@
 <template>
-    <a href="#" @click.prevent="$emit('click', dataset)">
+    <a href="#" class="button" @click.prevent="$emit('click', dataset)">
         {{ dataset.id }}
     </a>
 </template>
@@ -15,3 +15,15 @@ export default {
 }
 
 </script>
+
+
+
+<style lang="scss" scoped>
+    
+@import "./styles/colors";
+
+.button:hover {
+    background-color: $warning-color;
+}
+
+</style>

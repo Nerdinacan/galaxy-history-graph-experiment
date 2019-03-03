@@ -33,8 +33,6 @@
                 @clickNode="toggleNodeSelect"
                 @hoverNode="onMainHover">
 
-                
-    
                 <hover-selection 
                     v-if="hoverSelection" 
                     :graph="historyGraph"

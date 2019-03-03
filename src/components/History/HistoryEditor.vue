@@ -9,13 +9,14 @@
             @clickTool="onToolClick">
             
             <ul>
-                <li v-if="hasTool" :class="{ ready: canCreate }">
-                    <a @click.prevent="onRunToolClick">
+                <li>
+                    <a class="button" :class="{ ready: canCreate }" 
+                        @click.prevent="onRunToolClick">
                         Run Tool
                     </a>
                 </li>
                 <li v-if="selectedDatasets.size > 1">
-                    <a @click.prevent="$emit('groupSelection')">
+                    <a class="button" @click.prevent="$emit('groupSelection')">
                         Group Selected Nodes
                     </a>
                 </li>
@@ -132,4 +133,13 @@ export default {
 
 </script>
 
-<style src="./styles/index.scss" lang="scss"></style>
+
+<style lang="scss">
+
+@import "./styles/colors";
+
+.ready.button {
+    background-color: $ready-color;
+}
+
+</style>

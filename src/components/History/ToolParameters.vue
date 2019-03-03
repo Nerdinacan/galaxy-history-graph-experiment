@@ -64,36 +64,37 @@ export default {
 <style lang="scss">
 
 
-    .tool-parameters form {
-        fieldset {
+.tool-parameters form {
+    fieldset {
+        display: block;
+        margin: 0;
+        padding: 0.5rem 0;
+        border: none;
+
+        input, label {
             display: block;
-            margin: 0;
-            padding: 0.5rem 0;
-            border: none;
-
-            input, label {
-                display: block;
-            }
-
-            input {
-                width: 100%;
-                font-size: 1.2rem;
-                outline: none;
-                border: 0;
-                padding: 0;
-                &::placeholder {
-                    color: rgba(152,207,218,1);
-                }
-            }
-
-            label {
-                margin: 0.5rem 0;
-                font-size: 9px;
-                text-transform: uppercase;
-                font-family: Arial Black;
-            }
-
         }
+
+        input {
+            width: 100%;
+            font-size: 1.2rem;
+            outline: none;
+            border: 0;
+            padding: 0;
+            background-color: transparent;
+            &::placeholder {
+                color: rgba(152,207,218,1);
+            }
+        }
+
+        label {
+            margin: 0.5rem 0;
+            font-size: 9px;
+            text-transform: uppercase;
+            font-family: Arial Black;
+        }
+
     }
+}
 
 </style>

@@ -19,19 +19,16 @@
 
         <header v-if="selectedDatasets.size">
         	<h4>Selected Tool</h4>
-        </header>
-        
-        <a v-if="selectedDatasets.size" class="button" :class="toolClasses" 
+        </header>        
+        <a v-if="selectedDatasets.size" class="button tool-link" :class="toolClasses" 
             @click.prevent="$emit('clickTool', tool)">
             {{ toolLinkLabel }}
         </a>
-
 
         <header>
             <h4>Available Actions</h4>
         </header>
         <slot></slot>
-
 
     </section>
 </template>
@@ -67,7 +64,7 @@ export default {
 
         toolLinkLabel() {
             return this.tool 
-                ? this.tool.name.substr(0,10) + "..." 
+                ? this.tool.name
                 : "Tool goes here";
         }
     }
@@ -75,3 +72,17 @@ export default {
 }
 
 </script>
+
+<style lang="scss">
+    
+@import "./styles/colors";
+
+.button.tool {
+    background-color: $ready-color;
+    &:hover {
+        background-color: $warning-color;
+    }
+}
+
+
+</style>
