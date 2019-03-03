@@ -13,7 +13,6 @@ div.history
 @import "./colors";
 @import "./mixins";
 
-@import "./datasetSelection";
 @import "./hoverSelection";
 
 
@@ -22,18 +21,7 @@ div.history
     justify-content: flex-end;
 
     > section {
-        width: auto;
-    }
-
-    .dataset-selection {
-        min-width: 200px;
-    }
-    .tool-list {
-        min-width: 200px;
         max-width: 250px;
-    }
-    .tool-parameters {
-        min-width: 400px;
     }
 }
 
@@ -108,18 +96,12 @@ main {
 }
 
 
-.history-editor-panels {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: auto;
-}
 
 .history {
 
     @include typography();
     @include fill();
+    overflow: hidden;
     
     a.button {
         @include boringSquareButton();
@@ -149,11 +131,11 @@ main {
         }
     }
 
-    
     .history-editor-panels {
+        @include fill();
         z-index: 1;
         height: 100vh;
-
+        
         @include historyPanelFlexContainer();
         @include historyHandleClickThrough();
         
@@ -166,22 +148,34 @@ main {
 
         &.hide-dataset-selection .dataset-selection {
             display: none;
+            @include fadeOut();
+        }
+
+        .dataset-selection {
+            @include fadeIn();
         }
 
         // Tool List
 
         &.hide-tool-list .tool-list {
-            display: none;
+            max-width: 0;
+            @include fadeOut();
         }
 
         .tool-list {
             @include scrollableContent(".content");
+            @include fadeIn();
         }
         
         // Tool parameter form
         
         &.hide-tool-parameters .tool-parameters {
             display: none;
+            @include fadeOut();
+        }
+
+        .tool-parameters {
+            @include fadeIn();
         }
 
     }

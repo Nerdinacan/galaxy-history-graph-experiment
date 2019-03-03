@@ -4,7 +4,31 @@
             <h4>Tool params</h4>
         </header>
         <form>
-            <p>I am a big-ass form</p>
+            <input type="checkbox" v-model="isValid">
+            <label>Pretend params are valid</label>
         </form>
     </section>
 </template>
+
+<script>
+export default {
+    props: {
+        value: { type: Boolean, required: true }
+    },
+    data() {
+        return {
+            params: {}
+        }
+    },
+    computed: {
+        isValid: {
+            get() {
+                return this.value;
+            },
+            set(newval) {
+                this.$emit("input", newval);
+            }
+        }
+    }
+}
+</script>

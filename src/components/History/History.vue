@@ -27,6 +27,7 @@
             <history-graph 
                 :graph="historyGraph"
                 :selection="selection" 
+                :focus="focus"
                 :graphCenter="graphCenter"
                 :buildDiagram="buildDagDiagram"
                 @clickNode="toggleNodeSelect"
@@ -44,8 +45,7 @@
 
         </div>
 
-        <history-editor ref="editor" 
-            v-resize:debounce.initial="onEditorResize"
+        <history-editor ref="editor"
             :history="history" 
             :selectedDatasets="selectedDatasets"
             :hoverDataset="hoverDataset"
@@ -209,65 +209,8 @@ export default {
         onMainHover(node) {
             this.focusNode(node);
             this.hoverSelection = node;
-        },
-
-        /*
-        // current selection that also exists in passed history
-        relevantSelection(graph) {
-            let nodes = Array.from(graph).map(([k,v]) => v);
-            let intersection = setIntersect(this.selection, nodes);
-            return intersection;
-        },
-
-        getDatasetById(id) {
-            if (this.history) {
-                let datasets = this.history.datasets;
-                return datasets.find(ds => ds.id == id)
-            }
-            return null;
-        },
-
-        onGraphNodeClick(nodeData) {
-            if (nodeData && nodeData.type == "dataset") {
-                let id = nodeData.id;
-                let s = new Set(this.selection);
-                s.has(id) ? s.delete(id) : s.add(id);
-                this.selection = s;
-            }
-        },
-
-        doHoverSelect(o) {
-            // keeps existing hover even on mouse-out
-            if (o) {
-                this.focus = o.id;
-            }
-        },
-
-        changeFocus(o) {
-            console.log("changeFocus", o);
-        },
-        */
-
-        onEditorResize(container) {
-            console.log("editor resized", arguments);
-            // let container = this.$refs.container;
-            // let editor = this.$refs.editor;
-            // this.graphCenter = {
-            //     x: (container.clientWidth - editor.clientWidth) / 2,
-            //     y: editor.clientHeight / 2
-            // }
-        },
-
-        /*
-        reCenterGraph() {
-            let container = this.$refs.container;
-            let editor = this.$refs.editor;
-            this.graphCenter = {
-                x: (container.clientWidth - editor.clientWidth) / 2,
-                y: editor.clientHeight / 2
-            }
         }
-        */
+
     }
 }
 

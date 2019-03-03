@@ -10,24 +10,24 @@
             
             <ul>
                 <li v-if="hasTool" :class="{ ready: canCreate }">
-                    <a @click.prevent="$emit('createJob', { tool, toolParams })">
-                        Create Job
+                    <a @click.prevent="onRunToolClick">
+                        Run Tool
                     </a>
                 </li>
-                <!-- <li v-if="hasSelection">
-                    <a @click.prevent="onGroup">
+                <li v-if="selectedDatasets.size > 1">
+                    <a @click.prevent="$emit('groupSelection')">
                         Group Selected Nodes
                     </a>
-                </li> -->
+                </li>
             </ul>
 
         </dataset-selection>
 
         <tool-list @toolSelected="onToolSelected" />
 
-        <!-- <tool-parameters 
-            :tool="tool"
-            @paramsValid="onParamsValid" /> -->
+        <tool-parameters :tool="tool" 
+            v-model="toolParamsValid" 
+            @paramsValid="onParamsValid" />
 
     </div>
 </template>
@@ -60,7 +60,8 @@ export default {
     data() {
         return {
             tool: null,
-            toolParams: {}
+            toolParams: {},
+            toolParamsValid: false
         }
     },
 
@@ -79,19 +80,20 @@ export default {
             return {
                 "hide-dataset-selection": !this.hasSelection,
                 "hide-tool-list": !this.hasSelection || this.hasTool,
-                "hide-tool-parameters": !this.hasSelection && this.hasTool
+                "hide-tool-parameters": !this.hasTool || this.toolParamsValid
             }
         },
 
         canCreate() {
-            return this.hasSelection && this.hasTool;
+            return this.hasSelection && this.hasTool && this.toolParamsValid;
         }
     },
 
     methods: {
   
-        onParamsValid(isValid, params) {
+        onParamsValid({ params, isValid }) {
             console.log("onParamsValid", isValid, params);
+            this.toolParamsValid = isValid;
         },
 
         onGroup() {
@@ -110,6 +112,19 @@ export default {
         onToolSelected(tool = null) {
             this.tool = tool;
             this.toggleList = false;
+        },
+
+        onRunToolClick() {
+            if (this.hasSelection && this.hasTool && this.toolParamsValid) {
+                let { tool, toolParams } = this;
+                this.$emit('createJob', { tool, toolParams })
+            }
+        }
+    },
+
+    watch: {
+        tool(newTool) {
+            this.toolParamsValid = false;
         }
     }
 }

@@ -77,6 +77,11 @@ export default {
             return size;
         },
 
+        graphParams() {
+            let { graph, selection, focus } = this;
+            return { graph, selection, focus };
+        },
+
         updateFn() {
             return this.buildDiagram(this.$refs.svg, this);
         }
@@ -105,15 +110,11 @@ export default {
 
     watch: {
         
-        graph(newGraph) {
-            // console.log("heard graph change, calling updateFn")
-            this.updateFn(newGraph, this.selection, this.focus);
-        },
-
-        // mutate graph instead of redrawing whole thing
-        selection(newSelection) {
-            // console.log("heard selection change, calling updateFn");
-            this.updateFn(this.graph, newSelection, this.focus);
+        // update graph when important props change
+        graphParams({ graph, selection, focus }) {
+            this.$nextTick(() => {
+                this.updateFn(graph, selection, focus);
+            })
         },
 
         graphCenter(windowCenter) {
@@ -122,11 +123,12 @@ export default {
             //     zoomDiagram(this.$refs.svg, windowCenter);
             // }
         }
+
     },
 
     mounted() {
         console.log("component mounted, calling updateFn");
-        this.updateFn(this.graph);
+        this.updateFn(this.graph, this.selection, this.focus);
     }
 }
 

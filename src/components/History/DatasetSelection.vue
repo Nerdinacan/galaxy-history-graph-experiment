@@ -3,7 +3,6 @@
 
         
         <header>
-            <h2>Temp Editor</h2>
             <h4 v-if="selectedDatasets.size">Selected Inputs</h4>
         </header>
         <ol v-if="selectedDatasets.size">
