@@ -17,15 +17,15 @@
 
 header {
     position: fixed;
-    top: 1em;
-    left: 1em;
+    top: 0em;
+    left: 0em;
     widows: auto;
     height: auto;
     z-index: 10;
     nav ul {
         display: flex;
         li {
-            margin-right: 6px;
+            margin-right: 1px;
         }
     }
 }

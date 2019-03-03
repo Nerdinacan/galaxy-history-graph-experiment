@@ -63,9 +63,7 @@ export default {
         },
 
         toolLinkLabel() {
-            return this.tool 
-                ? this.tool.name
-                : "Tool goes here";
+            return this.tool ? this.tool.name : "Tool goes here";
         }
     }
 

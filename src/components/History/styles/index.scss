@@ -13,7 +13,7 @@ div.history
 @import "./colors";
 @import "./mixins";
 
-@import "./hoverSelection";
+@import "./forms";
 
 // click through the empty part of the
 // panels container, but re-capture in the
@@ -129,6 +129,9 @@ h4 {
     color: grey;
     margin-bottom: 0.5em;
 }
+
+
+
 
 
 .history {

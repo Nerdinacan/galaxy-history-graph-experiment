@@ -1,7 +1,7 @@
 <template>
     <section v-if="item" :class="classDef" class="hover-selection">
         <h4>{{ item.constructor.name }}</h4>
-        <h1>{{ itemKey.substr(0,16) }}</h1>
+        <h1>{{ itemKey }}</h1>
         <p>in: {{ incoming.join(", ") }}</p>
         <p>out: {{ outgoing.join(", ") }}</p>
     </section>
@@ -52,3 +52,5 @@ export default {
 }
 
 </script>
+
+<style src="./styles/hoverSelection.scss" lang="scss"></style>

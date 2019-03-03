@@ -11,7 +11,8 @@
                 @clickNode="focusNode">
 
                 <div class="search-radius">
-                    <input type="number" 
+                    <input type="number"
+                        id="searchRadius" 
                         name="searchRadius" 
                         min="1" max="10" 
                         v-model="searchRadius" />
@@ -219,21 +220,23 @@ export default {
 
 .jobToggle {
     position: absolute;
-    bottom: 3em;
-    right: 3em;
+    bottom: 2em;
+    right: 2em;
     z-index: 20;
 }
+
 .search-radius {
     position: absolute;
-    left: 3em;
-    bottom: 3em;
+    left: 2em;
+    bottom: 2em;
     z-index: 20;
     
     input[type="number"] {
-        width:3em;
-        font-size: 2em;
+        width: 2em;
+        font-size: 3em;
         display: block;
-        margin-bottom: 0.5em;
+        border: 0;
+        outline: 0;
     }
 }
 

@@ -1,9 +1,13 @@
-@import "./colors.scss";
+@import "~animatewithsass/animate.scss";
+@import "./colors";
+@import "./mixins";
 
 .hover-selection {
     position: absolute;
     bottom: 2em;
     left: 2em;
+    width: 40%;
+    max-width: 500px;
     margin: 0;
     padding: 0;
     z-index: 2;
@@ -12,12 +16,16 @@
         margin: 0;
         padding: 0;
     }
+
     h4 {
         color: lightgrey;
     }
     h1 {
         font-size: 1.4em;
         opacity: 0.5;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
     p {
         font-size: 0.8rem;

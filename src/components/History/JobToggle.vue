@@ -1,6 +1,7 @@
 <template>    
     <div class="jobToggle">
-        <input type="checkbox" v-model="jobToggle" /> Show Jobs
+        <input id="jobToggle" type="checkbox" v-model="jobToggle" />
+        <label for="jobToggle">Show Jobs</label>
     </div>  
 </template>
 
