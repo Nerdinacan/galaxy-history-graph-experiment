@@ -1,9 +1,9 @@
 <template>
     <section v-if="item" :class="classDef" class="hover-selection">
-        <h4>{{ item.type }}</h4>
+        <h4>{{ item.constructor.name }}</h4>
         <h1>{{ itemKey.substr(0,16) }}</h1>
-        <h3>in: {{ incoming.join(", ") }}</h3>
-        <h3>out: {{ outgoing.join(", ") }}</h3>
+        <p>in: {{ incoming.join(", ") }}</p>
+        <p>out: {{ outgoing.join(", ") }}</p>
     </section>
 </template>
 

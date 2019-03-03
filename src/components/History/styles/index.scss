@@ -107,7 +107,8 @@ main {
         @include boringSquareButton();
     }
 
-    .history-graph-container {
+    // Container for the side-by-side graphs
+    .history-graphs {
         
         @include fill();
         display: flex;
@@ -204,5 +205,15 @@ main {
         background-color: $ready-color;
         border-color: $ready-color;
     }
+
+    // headlines
+
+    h4 {
+        font-family: Arial Black;
+        font-size: 0.7em;
+        color: grey;
+        margin-bottom: 0.5em;
+    }
+
 }
 

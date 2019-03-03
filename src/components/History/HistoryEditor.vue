@@ -1,5 +1,5 @@
 <template>
-    <div ref="editor" class="history-editor-panels" :class="statusClasses">
+    <div class="history-editor-panels" :class="statusClasses">
 
         <dataset-selection
             :selectedDatasets="selectedDatasets"
@@ -25,7 +25,8 @@
 
         <tool-list @toolSelected="onToolSelected" />
 
-        <tool-parameters :tool="tool" 
+        <tool-parameters v-if="tool" 
+            :tool="tool" 
             v-model="toolParamsValid" 
             @paramsValid="onParamsValid" />
 

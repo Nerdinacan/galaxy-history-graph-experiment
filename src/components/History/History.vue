@@ -1,8 +1,7 @@
 <template>
     <div class="history" v-if="history">
-        <div class="history-graph-container">
+        <div class="history-graphs">
             
-
             <history-graph 
                 :graph="filteredHistoryGraph"
                 :selection="selection" 
@@ -23,7 +22,6 @@
 
             </history-graph>
 
-
             <history-graph 
                 :graph="historyGraph"
                 :selection="selection" 
@@ -41,7 +39,6 @@
                     :itemKey="hoverSelection.id" />
 
             </history-graph>
-
 
         </div>
 
