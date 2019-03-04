@@ -18,7 +18,7 @@
 
 <script>
 
-import { getTools } from "./service";
+import { getTools } from "./lib/service";
 
 export default {
     data() {

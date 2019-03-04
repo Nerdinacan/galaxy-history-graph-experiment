@@ -11,6 +11,10 @@
         }
     }
 
+    .edges line {
+        marker-end: url(#arrow);
+    }   
+
     .edges path {
         fill: transparent;
     }
@@ -61,7 +65,6 @@
             }
         }
 
-        
     }
 
 }    

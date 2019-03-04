@@ -10,7 +10,7 @@
 <script>
 
 import Graph from "graph.js";
-import { Dataset, Job } from "./model";
+import { Dataset, Job } from "./lib/model";
 
 export default {
     props: {

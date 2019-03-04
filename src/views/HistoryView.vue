@@ -5,8 +5,8 @@
 <script>
 
 import History from "@/components/History/History";
-import { loadHistoryById, loadRandomHistory } from "@/components/History/service";
-import { executeJob } from "@/components/History/service";
+import { loadHistoryById, loadRandomHistory, executeJob } 
+    from "@/components/History/lib/service";
 
 export default {
     components: {

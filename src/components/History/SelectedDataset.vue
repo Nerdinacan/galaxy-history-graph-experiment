@@ -6,7 +6,7 @@
 
 <script>
 
-import { Dataset } from "./model";
+import { Dataset } from "./lib/model";
 
 export default {
     props: {

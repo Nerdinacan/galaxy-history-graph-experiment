@@ -1,10 +1,6 @@
 <template>
     <section class="dataset-selection">
 
-        
-        <header>
-            <h4 v-if="selectedDatasets.size">Selected Inputs</h4>
-        </header>
         <ol v-if="selectedDatasets.size">
             <li v-for="ds of selectedDatasets">
                 <selected-dataset class="dataset" :dataset="ds" 
@@ -15,20 +11,21 @@
                     :dataset="hoverDataset" />
             </li>
         </ol>
-
-
-        <header v-if="selectedDatasets.size">
-        	<h4>Selected Tool</h4>
-        </header>        
-        <a v-if="selectedDatasets.size" class="button tool-link" :class="toolClasses" 
-            @click.prevent="$emit('clickTool', tool)">
-            {{ toolLinkLabel }}
-        </a>
-
+        <ol>
+            <li>
+                <a class="button tool-link" 
+                    :class="toolClasses" 
+                    @click.prevent="$emit('clickTool', tool)">
+                    {{ tool ? tool.name : "Select Tool..." }}
+                </a>
+            </li>
+        </ol>
+        
         <header>
             <h4>Available Actions</h4>
         </header>
         <slot></slot>
+
 
     </section>
 </template>
@@ -36,7 +33,7 @@
 <script>
 
 import SelectedDataset from "./SelectedDataset";
-import { Tool, Dataset} from "./model";
+import { Tool, Dataset} from "./lib/model";
 
 export default {
 
@@ -51,19 +48,13 @@ export default {
     },
 
     computed: {
-
         toolClasses() {
             return {
                 tool: this.tool
             }
         },
-
         hasSelection() {
             return this.selectedDatasets.size > 0;
-        },
-
-        toolLinkLabel() {
-            return this.tool ? this.tool.name : "Tool goes here";
         }
     }
 
@@ -81,6 +72,5 @@ export default {
         background-color: $warning-color;
     }
 }
-
 
 </style>

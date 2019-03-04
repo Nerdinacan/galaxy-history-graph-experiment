@@ -1,5 +1,5 @@
 import uuidv4 from "uuid/v4";
-import { createDataset, createJob, createTool } from "./model";
+import { createDataset, createJob, createTool } from "./lib/model";
 
 
 let indexToId = source => i => {

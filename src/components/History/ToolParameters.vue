@@ -30,6 +30,7 @@
 </template>
 
 <script>
+
 export default {
     props: {
         value: { type: Boolean, required: true },
@@ -56,4 +57,5 @@ export default {
         }
     }
 }
+
 </script>

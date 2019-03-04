@@ -40,8 +40,8 @@ import DatasetSelection from "./DatasetSelection";
 import ToolList from "./ToolList";
 import ToolParameters from "./ToolParameters";
 
-import { loadHistoryById } from "./service";
-import { Dataset } from "./model";
+import { loadHistoryById } from "./lib/service";
+import { Dataset } from "./lib/model";
 
 
 export default {

@@ -23,6 +23,20 @@
 
                 <job-toggle v-model="showJobs" />
 
+                <template v-slot:defs>
+                    <marker id="arrow"
+                        markerUnits="strokeWidth"
+                        markerWidth="12"
+                        markerHeight="12"
+                        viewBox="0 0 12 24"
+                        refX="19"
+                        refY="6"
+                        orient="auto">
+                        <path d="M2,2 L10,6 L2,10 L6,6 L2,2" 
+                            style="fill: #ccc"></path>
+                    </marker>
+                </template>
+
             </history-graph>
 
             <history-graph 
@@ -38,6 +52,19 @@
                     v-if="hoverSelection" 
                     :graph="historyGraph"
                     :itemKey="hoverSelection.id" />
+
+                <template v-slot:defs>
+                    <marker id="arrow"
+                        markerUnits="strokeWidth"
+                        markerWidth="12"
+                        markerHeight="12"
+                        viewBox="0 0 12 24"
+                        refX="19"
+                        refY="6"
+                        orient="auto">
+                        <path d="M2,2 L10,6 L2,10 L6,6 L2,2" style="fill: #ccc"></path>
+                    </marker>
+                </template>
 
             </history-graph>
 
@@ -64,11 +91,10 @@ import HistoryGraph from "./Graph";
 import HistoryEditor from "./HistoryEditor";
 import HoverSelection from "./HoverSelection";
 
-import { Dataset } from "./model";
+import { Dataset } from "./lib/model";
 import { generateHistoryGraph, generateJoblessGraph, generateFocusedGraph, selectNodesOnGraph } 
-    from "./generateGraph";
-
-import { buildDagDiagram } from "./dagDiagram";
+    from "./lib/generateGraph";
+import { buildDagDiagram } from "./lib/dagDiagram";
 
 export default {
 
@@ -232,8 +258,8 @@ export default {
     z-index: 20;
     
     input[type="number"] {
-        width: 2em;
-        font-size: 3em;
+        width: 1.5em;
+        font-size: 4em;
         display: block;
         border: 0;
         outline: 0;
