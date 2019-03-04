@@ -1,7 +1,7 @@
 <template>
     <div class="history" v-if="history">
         <div class="history-graphs">
-            
+
             <history-graph 
                 :graph="filteredHistoryGraph"
                 :selection="selection" 
@@ -24,20 +24,11 @@
                 <job-toggle v-model="showJobs" />
 
                 <template v-slot:defs>
-                    <marker id="arrow"
-                        markerUnits="strokeWidth"
-                        markerWidth="12"
-                        markerHeight="12"
-                        viewBox="0 0 12 24"
-                        refX="19"
-                        refY="6"
-                        orient="auto">
-                        <path d="M2,2 L10,6 L2,10 L6,6 L2,2" 
-                            style="fill: #ccc"></path>
-                    </marker>
+                    <arrow-marker />
                 </template>
 
             </history-graph>
+
 
             <history-graph 
                 :graph="historyGraph"
@@ -54,16 +45,7 @@
                     :itemKey="hoverSelection.id" />
 
                 <template v-slot:defs>
-                    <marker id="arrow"
-                        markerUnits="strokeWidth"
-                        markerWidth="12"
-                        markerHeight="12"
-                        viewBox="0 0 12 24"
-                        refX="19"
-                        refY="6"
-                        orient="auto">
-                        <path d="M2,2 L10,6 L2,10 L6,6 L2,2" style="fill: #ccc"></path>
-                    </marker>
+                    <arrow-marker />
                 </template>
 
             </history-graph>
@@ -90,11 +72,19 @@ import JobToggle from "./JobToggle";
 import HistoryGraph from "./Graph";
 import HistoryEditor from "./HistoryEditor";
 import HoverSelection from "./HoverSelection";
+import ArrowMarker from "./Arrow";
 
 import { Dataset } from "./lib/model";
-import { generateHistoryGraph, generateJoblessGraph, generateFocusedGraph, selectNodesOnGraph } 
-    from "./lib/generateGraph";
+
+import { 
+    generateHistoryGraph, 
+    generateJoblessGraph, 
+    generateFocusedGraph, 
+    selectNodesOnGraph 
+} from "./lib/generateGraph";
+
 import { buildDagDiagram } from "./lib/dagDiagram";
+
 
 export default {
 
@@ -106,7 +96,8 @@ export default {
         HistoryGraph, 
         HistoryEditor,
         HoverSelection,
-        JobToggle
+        JobToggle,
+        ArrowMarker
     },
 
     props: {
@@ -134,9 +125,7 @@ export default {
         
         // Full graph of all loaded history elements
         historyGraph() {
-            let result = generateHistoryGraph(this.history);
-            // result = selectNodesOnGraph(result, this.selection);
-            return result;
+            return generateHistoryGraph(this.history);
         },
 
         // local view
@@ -151,7 +140,6 @@ export default {
             return result;
         },
 
-        
         selectedDatasets() {
             let datasets = Array.from(this.selection).filter(node => node instanceof Dataset);
             return new Set(datasets);
@@ -182,14 +170,14 @@ export default {
 
         selection: {
             get() {
+                let result = new Set();
                 if (this.currentSelection.size) {
-                    let result = new Set();
                     let newMembers = Array.from(this.currentSelection).filter(o => {
                         return this.historyGraph.hasVertex(o.id);
                     });
-                    return new Set(newMembers);
+                    result = new Set(newMembers);
                 }
-                return new Set();
+                return result;
             },
             set(newSelection) {
                 this.currentSelection = newSelection;

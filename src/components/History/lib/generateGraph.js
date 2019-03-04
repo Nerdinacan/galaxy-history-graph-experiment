@@ -90,7 +90,7 @@ export function generateFocusedGraph(input, startNode, maxRadius = 1) {
     // loop over the collection and add in vertices that connect to
     // other members of the subset
     let placeholders = [];
-    for(let [nodeKey] of g) {
+    for (let [nodeKey] of g) {
 
         // look at all the incoming edges
         for (let [incomingVertexKey] of input.verticesTo(nodeKey)) {

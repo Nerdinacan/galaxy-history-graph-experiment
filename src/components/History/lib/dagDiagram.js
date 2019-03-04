@@ -8,11 +8,11 @@ import { select, selectAll } from "d3-selection";
 import { Dataset, Job, Placeholder } from "./model";
 import { convertGraphToDagre } from "./convertGraphToDagre";
 
-const layoutOptions = {
-    align: 'UL'
-}
+
+const layoutOptions = { align: 'UL' };
 
 const dataNodeSize = d => d.data instanceof Job ? 10 : 16;
+
 
 export function buildDagDiagram(svgEl, vm) {
 
@@ -85,7 +85,6 @@ export function buildDagDiagram(svgEl, vm) {
 function preprocessDAG(dag) {
 
     let nodeKeys = dag.nodes();
-
     let nodes = nodeKeys.map(key => dag.node(key));
 
     let links = dag.edges().map(({v,w}) => {

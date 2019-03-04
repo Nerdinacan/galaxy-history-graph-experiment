@@ -1,6 +1,14 @@
 <template>
     <section class="dataset-selection">
 
+
+        <!-- This section summarizes the currently selected 
+        parts we need to execute a new job -->
+
+        <header>
+            <h4>Current Operation</h4>
+        </header>
+
         <ol v-if="selectedDatasets.size">
             <li v-for="ds of selectedDatasets">
                 <selected-dataset class="dataset" :dataset="ds" 
@@ -21,9 +29,11 @@
             </li>
         </ol>
         
+
         <header>
             <h4>Available Actions</h4>
         </header>
+
         <slot></slot>
 
 
